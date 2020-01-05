@@ -1,0 +1,15 @@
+.Workflow {
+  border: solid #401122;
+  width: 800px;
+  height: 500px;
+  position : absolute;
+  left : 10px;
+  top : 40px;
+}
+
+.Material {
+  border: solid #808000;
+  width: 200px;
+  height: 100px;
+}
+
