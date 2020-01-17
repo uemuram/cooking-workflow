@@ -42,14 +42,23 @@ class Workflow extends React.Component {
         {
           type: "move",
           source: "sugar",
-          target: "bawl",
-          comment: "砂糖をボールへ"
+          target: "pot",
+          comment: "砂糖を鍋へ"
         },
         {
           type: "move",
           source: "SoySauce",
-          target: "bawl",
-          comment: "醤油をボールへ"
+          target: "pot",
+          comment: "醤油を鍋へ"
+        },
+        {
+          type : "boil",
+          source : "xx",
+          until : {
+            type : "condition",
+            state : "boiling"
+          },
+          comment : "沸騰するまで茹でる"
         }
       ]
     };
