@@ -16,52 +16,6 @@ class Workflow extends React.Component {
       bbb: "234"
     };
 
-    this.state.flow2 = {
-      title: "牛丼",
-      material: {
-        sugar: {
-          name: "砂糖",
-          quantity: [
-            {
-              amount: 9,
-              unit: "g"
-            }
-          ]
-        },
-        soySauce: {
-          name: "醤油",
-          quantity: [
-            {
-              amount: 45,
-              unit: "ml"
-            }
-          ]
-        }
-      },
-      action: [
-        {
-          type: "move",
-          source: "sugar",
-          target: "pot",
-          comment: "砂糖を鍋へ"
-        },
-        {
-          type: "move",
-          source: "SoySauce",
-          target: "pot",
-          comment: "醤油を鍋へ"
-        },
-        {
-          type : "boil",
-          source : "xx",
-          until : {
-            type : "condition",
-            state : "boiling"
-          },
-          comment : "沸騰するまで茹でる"
-        }
-      ]
-    };
   }
 
   updateState(width, height){
@@ -85,6 +39,8 @@ class Workflow extends React.Component {
         {this.state.height}
 
         かきくけこ
+
+        {this.props.recipe.title}
       </div>
     );
   }

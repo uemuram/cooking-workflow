@@ -8,22 +8,27 @@ class App2 extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      aaa: "abcdeffg",
+      aaa: "xxx",
+      recipe : {}
     }
-    fetch(process.env.REACT_APP_BACKEND_URL + "/api/courses")
+    // fetch(process.env.REACT_APP_BACKEND_URL + "/api/courses")
+    //   .then(response => response.json())
+    //   .then(json =>  this.setState( {aaa : json[0].name}));
+
+    fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
       .then(response => response.json())
-      .then(json =>  this.setState( {aaa : json[0].name}));
+      .then(json =>  this.setState( {recipe : json}));
   }
 
   renderWorkflow(){
-    return <Workflow />
+    return <Workflow recipe={this.state.recipe}/>
   }
 
   render() {
     return (
       <div>
         <p>
-          test4 : {this.state.aaa}
+          __test6 : {this.state.recipe.title}
         </p>
         <div>
           {this.renderWorkflow()}
