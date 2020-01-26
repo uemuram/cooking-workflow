@@ -5,11 +5,11 @@ import Workflow from './Workflow';
 
 class App2 extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       aaa: "xxx",
-      recipe : {}
+      recipe: {}
     }
     // fetch(process.env.REACT_APP_BACKEND_URL + "/api/courses")
     //   .then(response => response.json())
@@ -17,22 +17,38 @@ class App2 extends React.Component {
 
     fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
       .then(response => response.json())
-      .then(json =>  this.setState( {recipe : json}));
+      .then(json => this.setState({ recipe: json }));
+
+
   }
 
-  renderWorkflow(){
-    return <Workflow recipe={this.state.recipe}/>
+  renderWorkflow() {
+    return <Workflow recipe={this.state.recipe} />
   }
 
   render() {
     return (
       <div>
-        <p>
-          __test6 : {this.state.recipe.title}
-        </p>
         <div>
           {this.renderWorkflow()}
         </div>
+        <p>
+          __test6 : {this.state.recipe.title}
+        </p>
+        <p>
+          __test7 : {this.state.recipe.description}
+        </p>
+        <p>
+          __test8 : {JSON.stringify(this.state.recipe.test)}
+        </p>
+        <p>
+          __test9 : {//this.state.recipe.test.test2
+          }
+        </p>
+        <p>
+          __test10 : {this.state.recipe.test ? this.state.recipe.test.test2 : ""}
+        </p>
+
       </div>
     )
   }

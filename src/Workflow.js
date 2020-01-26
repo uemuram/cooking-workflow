@@ -37,10 +37,12 @@ class Workflow extends React.Component {
         <Material left={300} top={100} updateState={this.updateState.bind(this)} />
         {this.state.width}
         {this.state.height}
-
-        かきくけこ
-
+        かきくけこ<br/>
         {this.props.recipe.title}
+        さしすせそ<br/>
+        {this.props.recipe.description}
+        たちつてと<br/>
+        {this.props.recipe.material ? this.props.recipe.material.rice.name : ""}
       </div>
     );
   }
