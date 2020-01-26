@@ -18,8 +18,6 @@ class App2 extends React.Component {
     fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
       .then(response => response.json())
       .then(json => this.setState({ recipe: json }));
-
-
   }
 
   renderWorkflow() {
@@ -38,17 +36,6 @@ class App2 extends React.Component {
         <p>
           __test7 : {this.state.recipe.description}
         </p>
-        <p>
-          __test8 : {JSON.stringify(this.state.recipe.test)}
-        </p>
-        <p>
-          __test9 : {//this.state.recipe.test.test2
-          }
-        </p>
-        <p>
-          __test10 : {this.state.recipe.test ? this.state.recipe.test.test2 : ""}
-        </p>
-
       </div>
     )
   }
