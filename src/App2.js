@@ -24,9 +24,25 @@ class App2 extends React.Component {
     return <Workflow recipe={this.state.recipe} />
   }
 
+  buttonOnClick() {
+    console.log("buttonOnClick!");
+
+    // 要素を加工する。配下にも伝搬する。
+    let newRecipe = Object.assign({}, this.state.recipe);
+    newRecipe.title = newRecipe.title + 'x';
+    this.setState({recipe: newRecipe});
+
+    // 普通のアラートを出す。→クライアントサイドで動いているようだ
+    // alert("ok!");
+
+    // 全部消す。配下にも伝搬する。
+    //this.setState({recipe:{}});
+  }
+
   render() {
     return (
       <div>
+        <button onClick={() => this.buttonOnClick()}>何らかのボタン</button>
         <div>
           {this.renderWorkflow()}
         </div>
