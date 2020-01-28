@@ -54,7 +54,7 @@ class App extends React.Component {
         <div className="Flex">
           <form>
             <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
-            <button onClick={() => this.buttonOnClick()}>何らかのボタン</button>
+            <button type="button" onClick={() => this.buttonOnClick()}>何らかのボタン</button>
           </form>
           <div>
             {this.renderWorkflow()}
