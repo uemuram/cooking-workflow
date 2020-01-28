@@ -31,15 +31,15 @@ class Workflow extends React.Component {
         あいうえお
         {this.state.flow.bbb}
 
-        <Material left={30} top={60} updateState={this.updateState.bind(this)} />
+        <Material left={30} top={20} updateState={this.updateState.bind(this)} />
         {this.state.width}
         {this.state.height}
 
-        <Material left={300} top={100} updateState={this.updateState.bind(this)} />
+        <Material left={300} top={40} updateState={this.updateState.bind(this)} />
         {this.state.width}
         {this.state.height}
 
-        <Action left={150} top={200} updateState={this.updateState.bind(this)} />
+        <Action left={150} top={60} updateState={this.updateState.bind(this)} />
 
 
         かきくけこ<br/>

@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+.RecipeTextArea {
+  width: 400px;
+  height: 500px;
+}
+
+.Flex {
+  display: -webkit-flex;
+  display: flex;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
