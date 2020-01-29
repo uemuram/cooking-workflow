@@ -1,6 +1,8 @@
 import React from 'react';
 import './Workflow.css';
 import Workflow from './Workflow';
+import Util from './Util';
+const util = new Util();
 
 class App extends React.Component {
 
@@ -8,7 +10,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       value: "",
-      recipe: {}
+      recipe: {},
+      compiledRecipe: {}
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -17,7 +20,7 @@ class App extends React.Component {
       .then(response => response.json())
       .then(json => {
         this.setState({ recipe: json });
-        this.setState({ value : JSON.stringify(json, null, 2)});
+        this.setState({ value: JSON.stringify(json, null, 2) });
       });
   }
 
@@ -30,7 +33,13 @@ class App extends React.Component {
 
     // 要素を加工する。配下にも伝搬する。
     let newRecipe = JSON.parse(this.state.value);
-    this.setState({recipe: newRecipe});
+    let newCompiledRecipe = util.compileRecipe(newRecipe);
+
+    console.log(JSON.stringify(newCompiledRecipe, null, 2));
+
+    this.setState({ recipe: newRecipe });
+    this.setState({ compiledRecipe: newCompiledRecipe });
+
 
     // 要素を加工する。配下にも伝搬する。
     // let newRecipe = Object.assign({}, this.state.recipe);
@@ -45,7 +54,7 @@ class App extends React.Component {
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
   }
 
   render() {
@@ -54,6 +63,7 @@ class App extends React.Component {
         <div className="Flex">
           <form>
             <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
+            <br />
             <button type="button" onClick={() => this.buttonOnClick()}>何らかのボタン</button>
           </form>
           <div>

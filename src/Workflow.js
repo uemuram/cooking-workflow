@@ -3,7 +3,8 @@ import './App.css';
 import './Workflow.css';
 import Material from './Material';
 import Action from './Action';
-var Util = require('./Util');
+import Util from './Util';
+const util = new Util();
 
 class Workflow extends React.Component {
 
@@ -19,10 +20,10 @@ class Workflow extends React.Component {
 
   }
 
-  updateState(width, height){
+  updateState(width, height) {
     //alert("updatestate " + width + ":" + height);
-    this.setState({width: width});
-    this.setState({height: height});
+    this.setState({ width: width });
+    this.setState({ height: height });
   }
 
   render() {
@@ -42,15 +43,15 @@ class Workflow extends React.Component {
         <Action left={150} top={60} updateState={this.updateState.bind(this)} />
 
 
-        かきくけこ<br/>
+        かきくけこ<br />
         {this.props.recipe.title}
-        さしすせそ<br/>
+        さしすせそ<br />
         {this.props.recipe.description}
-        たちつてと<br/>
+        たちつてと<br />
         {this.props.recipe.material ? this.props.recipe.material.rice.name : ""}
 
 
-        {Util.test3()}
+        {util.test3()}
       </div>
     );
   }
