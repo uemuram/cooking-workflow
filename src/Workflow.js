@@ -48,7 +48,7 @@ class Workflow extends React.Component {
         さしすせそ<br />
         {this.props.recipe.description}
         たちつてと<br />
-        {this.props.recipe.material ? this.props.recipe.material.rice.name : ""}
+        {/*this.props.recipe.material ? this.props.recipe.material.rice.name : ""*/}
 
 
         {util.test3()}
