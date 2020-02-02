@@ -8,13 +8,14 @@
 .Material {
   position: absolute;
   border: solid #808000;
-  width: 200px;
-  height: 100px;
+  width: 100px;
+  height: 50px;
 }
 
 .Action {
   position: absolute;
   border: solid #408040;
-  width: 250px;
-  height: 150px;
+  font-size: small;
+  width: 150px;
+  height: 50px;
 }

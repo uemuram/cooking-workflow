@@ -6,33 +6,26 @@ class Action extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {};
-    this.state.xxx = {
-      aaa: "アクション",
-      bbb: "234"
-    };
   }
 
-
-
   render() {
-
     const styleGenerator = (left,top) => ({
       left: left + "px",
       top: top + "px"
     });
-
     return (
       <div className="Action"
         ref={div => { this.div = div; }}
-        style={styleGenerator(this.props.left,this.props.top)}
+        style={styleGenerator(this.props.action.posX,this.props.action.posY)}
       >
-        {this.state.xxx.aaa}
+        {this.props.action.comment}        
+        {/*
         <svg>
           <circle cx="100" cy="10" r="20" fill="red" />
           <rect x={this.props.x} y={this.props.y} width="30" height="30" fill="blue" />
         </svg>
+        */}
       </div>
     );
   }

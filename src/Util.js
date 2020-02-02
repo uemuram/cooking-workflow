@@ -1,3 +1,7 @@
+// 定数定義
+import Const from './Const';
+const c = new Const();
+
 class Util {
     test1() {
         return "test1";
@@ -154,13 +158,25 @@ class Util {
             }
         };
 
+        // 座標計算
+        // Y座標の基準値(階層)を計算
         this.setHierarchy(compiledRecipe, "start", 0);
+        // X座標の基準値(広がり)を計算
         let maxHierarchy = this.getObjectPropertyMax(compiledRecipe.action, "hierarchy");
         for (let i = 0; i <= maxHierarchy; i++) {
             compiledRecipe.actionMap.push([]);
         }
         this.setSpread(compiledRecipe,  "start", 0);
         console.log(compiledRecipe.actionMap);
+        // 基準値および広がりから、具体的な座標を計算
+        for (let currentActionName in action) {
+            let currentAction = action[currentActionName];
+            currentAction.posX = c.wfPaddingX + currentAction.spread * c.wfMagnificationX;            
+            currentAction.posY = c.wfPaddingY + currentAction.hierarchy * c.wfMagnificationY;
+        };
+
+        // コネクタを生成
+        
 
         return compiledRecipe;
     }
