@@ -10,14 +10,7 @@ class Workflow extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-    }
-
-    this.state.flow = {
-      aaa: "123",
-      bbb: "234"
-    };
-
+    this.state = {};
   }
 
   updateState(width, height) {
@@ -26,30 +19,42 @@ class Workflow extends React.Component {
     this.setState({ height: height });
   }
 
+  renderAction() {
+     return [
+       <Action left={150} top={60} key={"aaa"} updateState={this.updateState.bind(this)} />,
+       <Action left={160} top={60} key={"bbb"} updateState={this.updateState.bind(this)} />
+     ]
+  }
+
+  renderMaterial() {
+    return [
+      <Material left={300} top={5} key={"aaa"} updateState={this.updateState.bind(this)} />,
+      <Material left={310} top={10} key={"bbb"}  updateState={this.updateState.bind(this)} />
+    ]
+  }
+
   render() {
     return (
       <div className="Workflow">
-        あいうえお
-        {this.state.flow.bbb}
+        {this.props.compiledRecipe.title}
+        {this.props.compiledRecipe.description}
 
-        <Material left={30} top={20} updateState={this.updateState.bind(this)} />
-        {this.state.width}
-        {this.state.height}
+        {this.renderAction()}
+        {this.renderMaterial()}
 
-        <Material left={300} top={40} updateState={this.updateState.bind(this)} />
-        {this.state.width}
-        {this.state.height}
-
-        <Action left={150} top={60} updateState={this.updateState.bind(this)} />
-
-
-        かきくけこ<br />
-        {this.props.recipe.title}
-        さしすせそ<br />
-        {this.props.recipe.description}
-        たちつてと<br />
+        {/*<Material left={30} top={20} updateState={this.updateState.bind(this)} />*/}
+        {/*this.state.width*/}
+        {/*this.state.height*/}
+        {/*<Material left={300} top={40} updateState={this.updateState.bind(this)} />*/}
+        {/*this.state.width*/}
+        {/*this.state.height*/}
+        {/* 
+        <Material left={5} top={5} updateState={this.updateState.bind(this)} />
+        <Material left={5} top={10} updateState={this.updateState.bind(this)} />
+        <Action left={500} top={60} updateState={this.updateState.bind(this)} />
+        <Action left={510} top={80} updateState={this.updateState.bind(this)} />
+        */}
         {/*this.props.recipe.material ? this.props.recipe.material.rice.name : ""*/}
-
 
         {util.test3()}
       </div>

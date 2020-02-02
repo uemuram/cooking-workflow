@@ -19,7 +19,6 @@ class Action extends React.Component {
   render() {
 
     const styleGenerator = (left,top) => ({
-      position: "relative",
       left: left + "px",
       top: top + "px"
     });

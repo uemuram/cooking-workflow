@@ -8,8 +8,7 @@ class Util {
     };
 
     test3() {
-        console.log("test3abcde");
-        return "test3xx";
+        console.log("render!");
     };
 
     // 配列判定

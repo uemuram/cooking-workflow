@@ -1,16 +1,19 @@
 .Workflow {
+  position: relative;
   border: solid #401122;
   width: 800px;
   height: 500px;
 }
 
 .Material {
+  position: absolute;
   border: solid #808000;
   width: 200px;
   height: 100px;
 }
 
 .Action {
+  position: absolute;
   border: solid #408040;
   width: 250px;
   height: 150px;

@@ -25,7 +25,7 @@ class App extends React.Component {
   }
 
   renderWorkflow() {
-    return <Workflow recipe={this.state.recipe} />
+    return <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe}/>
   }
 
   buttonOnClick() {
@@ -71,10 +71,10 @@ class App extends React.Component {
           </div>
         </div >
         <p>
-          __test6 : {this.state.recipe.title}
+          {/*this.state.compiledRecipe.title*/}
         </p>
         <p>
-          __test7 : {this.state.recipe.description}
+          {/*this.state.compiledRecipe.description*/}
         </p>
       </div>
     )
