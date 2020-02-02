@@ -5,6 +5,12 @@
   height: 500px;
 }
 
+.WorkflowSvg {
+  width: 800px;
+  height: 1500px;
+}
+
+
 .Material {
   position: absolute;
   border: solid #808000;
@@ -16,6 +22,4 @@
   position: absolute;
   border: solid #408040;
   font-size: small;
-  width: 150px;
-  height: 50px;
 }

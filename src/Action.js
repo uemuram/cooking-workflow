@@ -1,6 +1,7 @@
 import React from 'react';
 import './Workflow.css';
-
+import Const from './Const';
+const c = new Const();
 
 class Action extends React.Component {
 
@@ -12,7 +13,9 @@ class Action extends React.Component {
   render() {
     const styleGenerator = (left,top) => ({
       left: left + "px",
-      top: top + "px"
+      top: top + "px",
+      width: c.wfActionWidth + "px",
+      height: c.wfActionHeight + "px"
     });
     return (
       <div className="Action"

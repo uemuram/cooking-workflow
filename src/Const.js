@@ -6,8 +6,12 @@ class Const {
         this.wfPaddingY = 60;    
 
         // ワークフローの描画倍率
-        this.wfMagnificationX = 200;
+        this.wfMagnificationX = 180;
         this.wfMagnificationY = 100;
+
+        // ワークフローのActionのサイズ
+        this.wfActionWidth = 120;
+        this.wfActionHeight = 50;
 
     }
 

@@ -26,16 +26,13 @@ class Workflow extends React.Component {
     let action = this.props.compiledRecipe.action;
     let components = [];
 
-    let x = 10;
-
     // 各アクションをコンポーネント化する
     for (let currentActionName in action) {
       let currentAction = action[currentActionName];
       components.push(
-        <Action left={50 + x} top={40 + x} key={currentActionName} 
+        <Action key={currentActionName} 
          action={currentAction} updateState={this.updateState.bind(this)} />
       );
-      x += 30;
     }
     
     return components;
@@ -43,7 +40,23 @@ class Workflow extends React.Component {
 
   // アクションをつなぐコネクタを描画する
   renderActionConnector(){
-    return <svg><circle cx="100" cy="10" r="20" fill="red" /></svg>
+    let connector = this.props.compiledRecipe.connector;
+    let connectors = [];
+    for(let i=0; i<connector.length; i++){
+
+      let currentConnector = connector[i];
+      console.log(currentConnector.from.actionName + "_" + currentConnector.to.actionName);
+      console.log(currentConnector);
+
+      connectors.push(
+        <line x1={currentConnector.from.posX} y1={currentConnector.from.posY} 
+              x2={currentConnector.to.posX} y2={currentConnector.to.posY}
+              stroke="black" strokeWidth="1" 
+              key={currentConnector.from.actionName + "_" + currentConnector.to.actionName} />
+      );
+    }
+    console.log(connectors.length);
+    return connectors;
   }
 
 
@@ -58,12 +71,13 @@ class Workflow extends React.Component {
   render() {
     return (
       <div className="Workflow">
+
         {this.props.compiledRecipe.title}
         <br />
         {this.props.compiledRecipe.description}
 
         {this.renderAction()}
-        {this.renderActionConnector()}
+        <svg className="WorkflowSvg">{this.renderActionConnector()}</svg>
         {/* this.renderMaterial() */}
 
 

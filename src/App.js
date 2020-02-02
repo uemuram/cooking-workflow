@@ -10,63 +10,63 @@ class App extends React.Component {
     super(props);
     this.state = {
       value: "",
-      recipe: {container:{}, material:{}, action:{}},
-      compiledRecipe: {container:{}, material:{}, action:{}}
+      recipe: { container: {}, material: {}, action: {} },
+      compiledRecipe: { container: {}, material: {}, action: {}, connector: [] }
     }
 
     this.handleChange = this.handleChange.bind(this);
 
-/*
-    let json = {
-      title: "xx料理",
-      description: "yyをzzした料理です",
-      container: {},
-      material: {},
-      action: {
-        a: {
-          next: "c"
-        },
-        b: {
-          next: [
-            "d"
-          ]
-        },
-        c: {
-          next: ["e", "f"]
-        },
-        d: {
-          next: [
-            "g"
-          ]
-        },
-        e: {
-          next: "j"
-        },
-        f: {
-          next: ["h", "i"]
-        },
-        g: {
-          next: [
-            "finish"
-          ]
-        },
-        h: {
-          next: "j"
-        },
-        i: {
-          next: "k"
-        },
-        j: {
-          next: "k"
-        },
-        k: {
-          next: "finish"
-        }
-      }
-    };
-    this.state.recipe = json;
-    this.state.value = JSON.stringify(json, null, 2);
-*/
+    /*
+        let json = {
+          title: "xx料理",
+          description: "yyをzzした料理です",
+          container: {},
+          material: {},
+          action: {
+            a: {
+              next: "c"
+            },
+            b: {
+              next: [
+                "d"
+              ]
+            },
+            c: {
+              next: ["e", "f"]
+            },
+            d: {
+              next: [
+                "g"
+              ]
+            },
+            e: {
+              next: "j"
+            },
+            f: {
+              next: ["h", "i"]
+            },
+            g: {
+              next: [
+                "finish"
+              ]
+            },
+            h: {
+              next: "j"
+            },
+            i: {
+              next: "k"
+            },
+            j: {
+              next: "k"
+            },
+            k: {
+              next: "finish"
+            }
+          }
+        };
+        this.state.recipe = json;
+        this.state.value = JSON.stringify(json, null, 2);
+    */
 
     fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
       .then(response => response.json())

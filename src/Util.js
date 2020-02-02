@@ -39,7 +39,7 @@ class Util {
 
     // 2次元配列を受け取り、指定された箇所より下側に要素があるかどうかを返す
     checkExistUnderArray(array, h, s) {
-        for (let i = h+1; i < array.length; i++) {
+        for (let i = h + 1; i < array.length; i++) {
             //console.log(array[i][s])
             if (array[i][s]) {
                 return true
@@ -80,18 +80,18 @@ class Util {
         }
 
         // セット処理
-        while(this.checkExistUnderArray(recipe.actionMap, currentAction.hierarchy, currentSpread)){
+        while (this.checkExistUnderArray(recipe.actionMap, currentAction.hierarchy, currentSpread)) {
             currentSpread++;
         };
 
         currentAction.spread = currentSpread;
-        recipe.actionMap[currentAction.hierarchy][currentSpread]=currentActionName;
+        recipe.actionMap[currentAction.hierarchy][currentSpread] = currentActionName;
 
         // 終了アクションであれば終わり
         if (currentActionName === "finish") {
             return;
         }
- 
+
         // 次アクション全てに対して階層+1で再帰呼び出し
         for (let i = 0; i < currentAction.next.length; i++) {
             let nextActionName = currentAction.next[i];
@@ -110,6 +110,8 @@ class Util {
         compiledRecipe.action.finish = {};
         // アクション要素のマップ(どのアクションがどこにあるか)
         compiledRecipe.actionMap = [];
+        // コネクタ情報
+        compiledRecipe.connector = [];
 
         // ひとつ前のアクションへのリンクを各アクションに貼る
         let action = compiledRecipe.action
@@ -134,17 +136,25 @@ class Util {
                 let nextActionName = currentAction.next[i];
                 console.log(currentActionName + " -> " + nextActionName);
 
+                let nextAction = action[nextActionName];
+
                 // 次アクションの実態がない場合はエラー
-                if (!action[nextActionName]) {
+                if (!nextAction) {
                     console.log("Error : 次アクションなし");
                     continue;
                 }
 
+                // コネクタのfrom,toをセット(座標は後でセット)
+                compiledRecipe.connector.push({
+                    from: { actionName: currentActionName },
+                    to: { actionName: nextActionName }
+                });
+
                 // 手前アクションをセット
-                if (!action[nextActionName].prev) {
-                    action[nextActionName].prev = [currentActionName];
+                if (!nextAction.prev) {
+                    nextAction.prev = [currentActionName];
                 } else {
-                    action[nextActionName].prev.push(currentActionName);
+                    nextAction.prev.push(currentActionName);
                 }
 
             }
@@ -153,8 +163,14 @@ class Util {
         // 開始アクションの次のアクションを探す
         for (let currentActionName in action) {
             if (!action[currentActionName].prev && currentActionName !== "start") {
+                // 開始アクションとのつながり(prev,next)をセット
                 action[currentActionName].prev = ["start"];
                 action.start.next.push(currentActionName);
+                // コネクタのfrom,toをセット(座標は後でセット)
+                compiledRecipe.connector.push({
+                    from: { actionName: "start" },
+                    to: { actionName: currentActionName }
+                });
             }
         };
 
@@ -166,18 +182,23 @@ class Util {
         for (let i = 0; i <= maxHierarchy; i++) {
             compiledRecipe.actionMap.push([]);
         }
-        this.setSpread(compiledRecipe,  "start", 0);
+        this.setSpread(compiledRecipe, "start", 0);
         console.log(compiledRecipe.actionMap);
         // 基準値および広がりから、具体的な座標を計算
         for (let currentActionName in action) {
             let currentAction = action[currentActionName];
-            currentAction.posX = c.wfPaddingX + currentAction.spread * c.wfMagnificationX;            
+            currentAction.posX = c.wfPaddingX + currentAction.spread * c.wfMagnificationX;
             currentAction.posY = c.wfPaddingY + currentAction.hierarchy * c.wfMagnificationY;
         };
 
-        // コネクタを生成
-        
-
+        // コネクタの座標を計算
+        for (let i = 0; i < compiledRecipe.connector.length; i++) {
+            let connector = compiledRecipe.connector[i];
+            connector.from.posX = compiledRecipe.action[connector.from.actionName].posX + c.wfActionWidth / 2;
+            connector.from.posY = compiledRecipe.action[connector.from.actionName].posY+ c.wfActionHeight;
+            connector.to.posX = compiledRecipe.action[connector.to.actionName].posX+ c.wfActionWidth / 2;
+            connector.to.posY = compiledRecipe.action[connector.to.actionName].posY;
+        }
         return compiledRecipe;
     }
 }
