@@ -68,8 +68,6 @@ class Util {
         }
     }
 
-
-
     // 各アクションの広がり(横位置)をセット
     setSpread(recipe, currentActionName, currentSpread) {
         let currentAction = recipe.action[currentActionName];
@@ -100,6 +98,40 @@ class Util {
         }
     }
 
+    // アクションのタイトルを設定する
+    setActionTitle(material, container, action) {
+        // すでにタイトルがセットされている場合はそちらを優先させる
+        if (action.title) {
+            return;
+        }
+        let title = "";
+        // アクションのタイプに応じてタイトルを設定
+        switch (action.type) {
+            case "add":
+                title = "aaa";
+                break;
+            case "serve":
+                title = "bbb";
+                break;
+            case "cookRice":
+                title = material[action.source].name + "を炊く";
+                break;
+            case "cut":
+                title = material[action.source].name + "を切る";
+                break;
+            case "stew":
+                title = container[action.source].name + "を煮込む";
+                break;
+            case "boil":
+                title = "eee";
+                break;
+
+            default:
+                break;
+        }
+        action.title = title;
+    }
+
     compileRecipe(recipe) {
         console.log(recipe.title);
         let compiledRecipe = Object.assign({}, recipe);
@@ -113,7 +145,7 @@ class Util {
         // コネクタ情報
         compiledRecipe.connector = [];
 
-        // ひとつ前のアクションへのリンクを各アクションに貼る
+        // 全アクション走査、初期設定
         let action = compiledRecipe.action
         for (let currentActionName in action) {
             // 今見ているアクション
@@ -126,10 +158,13 @@ class Util {
             if (currentActionName === "finish") {
                 continue;
             }
-            // 次アクションを配列化
+            // 次アクションが単品の場合は配列にしておく
             if (!this.isArray(currentAction.next)) {
                 currentAction.next = [currentAction.next];
             }
+
+            // 各アクションのタイトルをセットする
+            this.setActionTitle(compiledRecipe.material, compiledRecipe.container, currentAction);
 
             // 次アクションに対してループ
             for (let i = 0; i < currentAction.next.length; i++) {
@@ -195,8 +230,8 @@ class Util {
         for (let i = 0; i < compiledRecipe.connector.length; i++) {
             let connector = compiledRecipe.connector[i];
             connector.from.posX = compiledRecipe.action[connector.from.actionName].posX + c.wfActionWidth / 2;
-            connector.from.posY = compiledRecipe.action[connector.from.actionName].posY+ c.wfActionHeight;
-            connector.to.posX = compiledRecipe.action[connector.to.actionName].posX+ c.wfActionWidth / 2;
+            connector.from.posY = compiledRecipe.action[connector.from.actionName].posY + c.wfActionHeight;
+            connector.to.posX = compiledRecipe.action[connector.to.actionName].posX + c.wfActionWidth / 2;
             connector.to.posY = compiledRecipe.action[connector.to.actionName].posY;
         }
         return compiledRecipe;

@@ -21,7 +21,7 @@ class Action extends React.Component {
 
         <foreignObject x={this.props.action.posX +2} y={this.props.action.posY}
           width={c.wfActionWidth} height={c.wfActionHeight} >
-          <div>{this.props.action.comment}</div>
+          <div>{this.props.action.title}</div>
         </foreignObject>
 
       </g>

@@ -16,14 +16,14 @@ class Workflow extends React.Component {
   }
 
   updateState(width, height) {
-    //alert("updatestate " + width + ":" + height);
     this.setState({ width: width });
     this.setState({ height: height });
   }
 
-  // アクションを表示用に整備し、コンポーネント化する
+  // アクションを描画する
   renderAction() {
     let action = this.props.compiledRecipe.action;
+    let material = this.props.compiledRecipe.material;
     let components = [];
 
     // 各アクションをコンポーネント化する
@@ -31,28 +31,27 @@ class Workflow extends React.Component {
       let currentAction = action[currentActionName];
       components.push(
         <Action key={currentActionName} 
-         action={currentAction}/>
+         action={currentAction} material={material}/>
       );
     }
-    
     return components;
   }
 
   // アクションをつなぐコネクタを描画する
   renderActionConnector(){
     let connector = this.props.compiledRecipe.connector;
-    let connectors = [];
+    let components = [];
+
     for(let i=0; i<connector.length; i++){
       let currentConnector = connector[i];
-      connectors.push(
+      components.push(
         <line x1={currentConnector.from.posX} y1={currentConnector.from.posY} 
               x2={currentConnector.to.posX} y2={currentConnector.to.posY}
               stroke="black" strokeWidth="1" 
               key={currentConnector.from.actionName + "_" + currentConnector.to.actionName} />
       );
     }
-    console.log(connectors.length);
-    return connectors;
+    return components;
   }
 
 
