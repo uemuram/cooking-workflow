@@ -63,7 +63,6 @@ class Workflow extends React.Component {
     ]
   }
 
-
   render() {
     return (
       <div className="Workflow">
@@ -76,23 +75,6 @@ class Workflow extends React.Component {
           {this.renderActionConnector()}
           {/* this.renderMaterial() */}
         </svg>
-
-
-
-
-        {/*<Material left={30} top={20} updateState={this.updateState.bind(this)} />*/}
-        {/*this.state.width*/}
-        {/*this.state.height*/}
-        {/*<Material left={300} top={40} updateState={this.updateState.bind(this)} />*/}
-        {/*this.state.width*/}
-        {/*this.state.height*/}
-        {/* 
-        <Material left={5} top={5} updateState={this.updateState.bind(this)} />
-        <Material left={5} top={10} updateState={this.updateState.bind(this)} />
-        <Action left={500} top={60} updateState={this.updateState.bind(this)} />
-        <Action left={510} top={80} updateState={this.updateState.bind(this)} />
-        */}
-        {/*this.props.recipe.material ? this.props.recipe.material.rice.name : ""*/}
 
         {util.test3()}
       </div>
