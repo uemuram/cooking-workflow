@@ -3,7 +3,7 @@ class Const {
 
         // ワークフローの描画開始位置(左上の座標)
         this.wfPaddingX = 20;
-        this.wfPaddingY = 60;    
+        this.wfPaddingY = 30;    
 
         // ワークフローの描画倍率
         this.wfMagnificationX = 180;

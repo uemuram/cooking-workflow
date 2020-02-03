@@ -31,7 +31,7 @@ class Workflow extends React.Component {
       let currentAction = action[currentActionName];
       components.push(
         <Action key={currentActionName} 
-         action={currentAction} updateState={this.updateState.bind(this)} />
+         action={currentAction}/>
       );
     }
     
@@ -43,11 +43,7 @@ class Workflow extends React.Component {
     let connector = this.props.compiledRecipe.connector;
     let connectors = [];
     for(let i=0; i<connector.length; i++){
-
       let currentConnector = connector[i];
-      console.log(currentConnector.from.actionName + "_" + currentConnector.to.actionName);
-      console.log(currentConnector);
-
       connectors.push(
         <line x1={currentConnector.from.posX} y1={currentConnector.from.posY} 
               x2={currentConnector.to.posX} y2={currentConnector.to.posY}
@@ -71,14 +67,16 @@ class Workflow extends React.Component {
   render() {
     return (
       <div className="Workflow">
-
         {this.props.compiledRecipe.title}
         <br />
         {this.props.compiledRecipe.description}
 
-        {this.renderAction()}
-        <svg className="WorkflowSvg">{this.renderActionConnector()}</svg>
-        {/* this.renderMaterial() */}
+        <svg className="WorkflowSvg">
+          {this.renderAction()}
+          {this.renderActionConnector()}
+          {/* this.renderMaterial() */}
+        </svg>
+
 
 
 

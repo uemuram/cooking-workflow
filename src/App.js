@@ -118,16 +118,8 @@ class App extends React.Component {
             <br />
             <button type="button" onClick={() => this.buttonOnClick()}>何らかのボタン</button>
           </form>
-          <div>
-            {this.renderWorkflow()}
-          </div>
+          {this.renderWorkflow()}
         </div >
-        <p>
-          {/*this.state.compiledRecipe.title*/}
-        </p>
-        <p>
-          {/*this.state.compiledRecipe.description*/}
-        </p>
       </div>
     )
   }
