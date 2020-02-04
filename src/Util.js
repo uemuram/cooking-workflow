@@ -98,6 +98,29 @@ class Util {
         }
     }
 
+    // アクションの終了条件を文章で返す
+    // 「xx分」「xxまで」などを想定
+    getExitConditionStr(action){
+        let str = "";
+        if(action.until && action.until.type === "time"){
+            str = action.until.value + "分";
+        }
+        return str;
+    }
+
+    // ソースの一覧を文章で表す
+    // limitは列挙の上限を示す。limit=2なら、3個以上のソースは「など」で集約する。
+    getSourceStr(action, material, limit){
+        let materialNames = [];
+        // 素材の一覧を取得
+        for(let i=0; i<action.source.length; i++){
+            materialNames.push(material[action.source[i]].name);
+        }
+        return materialNames.length > limit ? 
+            materialNames.slice(0,limit).join(",") + "など":
+            materialNames.slice(0,limit).join(",")
+    }
+
     // アクションのタイトルを設定する
     setActionTitle(material, container, action) {
         // すでにタイトルがセットされている場合はそちらを優先させる
@@ -108,10 +131,10 @@ class Util {
         // アクションのタイプに応じてタイトルを設定
         switch (action.type) {
             case "add":
-                title = "aaa";
+                title = this.getSourceStr(action,material,2) + "を" + container[action.target].name + "に加える";
                 break;
             case "serve":
-                title = "bbb";
+                title = "盛り付ける";
                 break;
             case "cookRice":
                 title = material[action.source].name + "を炊く";
@@ -120,12 +143,14 @@ class Util {
                 title = material[action.source].name + "を切る";
                 break;
             case "stew":
-                title = container[action.source].name + "を煮込む";
+                title = this.getExitConditionStr(action) + "煮込む";
                 break;
             case "boil":
-                title = "eee";
+                title = this.getExitConditionStr(action) + "茹でる";
                 break;
-
+            case "bringToABoil":
+                title = "沸騰させる";
+                break;
             default:
                 break;
         }
@@ -158,9 +183,14 @@ class Util {
             if (currentActionName === "finish") {
                 continue;
             }
-            // 次アクションが単品の場合は配列にしておく
+            // 次アクションが単一の場合は配列にしておく
             if (!this.isArray(currentAction.next)) {
                 currentAction.next = [currentAction.next];
+            }
+
+            // ソースが単一の場合は配列にしておく
+            if(currentAction.source && !this.isArray(currentAction.source)){
+                currentAction.source = [currentAction.source];
             }
 
             // 各アクションのタイトルをセットする
