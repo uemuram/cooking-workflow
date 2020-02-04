@@ -151,20 +151,22 @@ class Util {
     }
 
     compileRecipe(recipe) {
-        console.log(recipe.title);
+
+        // 変更対象要素
         let compiledRecipe = Object.assign({}, recipe);
+        let actions = compiledRecipe.actions;
 
         // 追加要素の初期化
         // 開始、終了ノード
-        compiledRecipe.actions.start = { next: [] };
-        compiledRecipe.actions.finish = {};
+        actions.start = { next: [] };
+        actions.finish = {};
         // アクション要素のマップ(どのアクションがどこにあるか)
         compiledRecipe.actionMap = [];
         // コネクタ情報
         compiledRecipe.connectors = [];
+        let connectors = compiledRecipe.connectors;
 
         // 全アクション走査、初期設定
-        let actions = compiledRecipe.actions
         for (let currentActionName in actions) {
             // 今見ているアクション
             let currentAction = actions[currentActionName];
@@ -225,7 +227,7 @@ class Util {
                 actions[currentActionName].prev = ["start"];
                 actions.start.next.push(currentActionName);
                 // コネクタのfrom,toをセット(座標は後でセット)
-                compiledRecipe.connectors.push({
+                connectors.push({
                     from: { actionName: "start" },
                     to: { actionName: currentActionName }
                 });
@@ -236,7 +238,7 @@ class Util {
         // Y座標の基準値(階層)を計算
         this.setHierarchy(compiledRecipe, "start", 0);
         // X座標の基準値(広がり)を計算
-        let maxHierarchy = this.getObjectPropertyMax(compiledRecipe.actions, "hierarchy");
+        let maxHierarchy = this.getObjectPropertyMax(actions, "hierarchy");
         for (let i = 0; i <= maxHierarchy; i++) {
             compiledRecipe.actionMap.push([]);
         }
@@ -250,12 +252,12 @@ class Util {
         };
 
         // コネクタの座標を計算
-        for (let i = 0; i < compiledRecipe.connectors.length; i++) {
-            let connector = compiledRecipe.connectors[i];
-            connector.from.posX = compiledRecipe.actions[connector.from.actionName].posX + c.wfActionWidth / 2;
-            connector.from.posY = compiledRecipe.actions[connector.from.actionName].posY + c.wfActionHeight;
-            connector.to.posX = compiledRecipe.actions[connector.to.actionName].posX + c.wfActionWidth / 2;
-            connector.to.posY = compiledRecipe.actions[connector.to.actionName].posY;
+        for (let i = 0; i < connectors.length; i++) {
+            let connector = connectors[i];
+            connector.from.posX = actions[connector.from.actionName].posX + c.wfActionWidth / 2;
+            connector.from.posY = actions[connector.from.actionName].posY + c.wfActionHeight;
+            connector.to.posX = actions[connector.to.actionName].posX + c.wfActionWidth / 2;
+            connector.to.posY = actions[connector.to.actionName].posY;
         }
         return compiledRecipe;
     }
