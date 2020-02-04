@@ -41,52 +41,52 @@ class Util {
     }
 
     // 各アクションの階層(縦位置)をセット
-    setHierarchy(recipe, currentActionName, currentHierarchy) {
-        let currentAction = recipe.actions[currentActionName];
+    setHierarchy(recipe, actionName, hierarchy) {
+        let action = recipe.actions[actionName];
 
         // 既にセットされていたら何もしない(分岐した後の合流を考慮)
-        if (currentAction.hierarchy && currentAction.hierarchy >= currentHierarchy) {
+        if (action.hierarchy && action.hierarchy >= hierarchy) {
             return;
         }
-        currentAction.hierarchy = currentHierarchy;
+        action.hierarchy = hierarchy;
         // 終了アクションであれば終わり
-        if (currentActionName === "finish") {
+        if (actionName === "finish") {
             return;
         }
         // 次アクション全てに対して階層+1で再帰呼び出し
-        for (let i = 0; i < currentAction.next.length; i++) {
-            let nextActionName = currentAction.next[i];
-            this.setHierarchy(recipe, nextActionName, currentHierarchy + 1);
+        for (let i = 0; i < action.next.length; i++) {
+            let nextActionName = action.next[i];
+            this.setHierarchy(recipe, nextActionName, hierarchy + 1);
         }
     }
 
     // 各アクションの広がり(横位置)をセット
-    setSpread(recipe, currentActionName, currentSpread) {
-        let currentAction = recipe.actions[currentActionName];
+    setSpread(recipe, actionName, spread) {
+        let action = recipe.actions[actionName];
 
         // 既にセットされていたら何もしない(分岐した後の合流を考慮)
-        if (currentAction.spread != null) {
+        if (action.spread != null) {
             return;
         }
 
         // セット処理
-        while (this.checkExistUnderArray(recipe.actionMap, currentAction.hierarchy, currentSpread)) {
-            currentSpread++;
+        while (this.checkExistUnderArray(recipe.actionMap, action.hierarchy, spread)) {
+            spread++;
         };
 
-        currentAction.spread = currentSpread;
-        recipe.actionMap[currentAction.hierarchy][currentSpread] = currentActionName;
+        action.spread = spread;
+        recipe.actionMap[action.hierarchy][spread] = actionName;
 
         // 終了アクションであれば終わり
-        if (currentActionName === "finish") {
+        if (actionName === "finish") {
             return;
         }
 
         // 次アクション全てに対して階層+1で再帰呼び出し
-        for (let i = 0; i < currentAction.next.length; i++) {
-            let nextActionName = currentAction.next[i];
-            this.setSpread(recipe, nextActionName, currentSpread);
-            currentSpread++;
+        for (let i = 0; i < action.next.length; i++) {
+            let nextActionName = action.next[i];
+            this.setSpread(recipe, nextActionName, spread);
+            spread++;
         }
     }
 
@@ -155,6 +155,8 @@ class Util {
         // 変更対象要素
         let compiledRecipe = Object.assign({}, recipe);
         let actions = compiledRecipe.actions;
+        let materials = compiledRecipe.materials;
+        let containers = compiledRecipe.containers;
 
         // 追加要素の初期化
         // 開始、終了ノード
@@ -167,34 +169,34 @@ class Util {
         let connectors = compiledRecipe.connectors;
 
         // 全アクション走査、初期設定
-        for (let currentActionName in actions) {
+        for (let actionName in actions) {
             // 今見ているアクション
-            let currentAction = actions[currentActionName];
+            let action = actions[actionName];
 
             // 階層、広がりをリセットしておく
-            currentAction.hierarchy = null;
-            currentAction.spread = null;
+            action.hierarchy = null;
+            action.spread = null;
 
-            if (currentActionName === "finish") {
+            if (actionName === "finish") {
                 continue;
             }
             // 次アクションが単一の場合は配列にしておく
-            if (!this.isArray(currentAction.next)) {
-                currentAction.next = [currentAction.next];
+            if (!this.isArray(action.next)) {
+                action.next = [action.next];
             }
 
             // ソースが単一の場合は配列にしておく
-            if (currentAction.source && !this.isArray(currentAction.source)) {
-                currentAction.source = [currentAction.source];
+            if (action.source && !this.isArray(action.source)) {
+                action.source = [action.source];
             }
 
             // 各アクションのタイトルをセットする
-            this.setActionTitle(compiledRecipe.materials, compiledRecipe.containers, currentAction);
+            this.setActionTitle(materials, containers, action);
 
             // 次アクションに対してループ
-            for (let i = 0; i < currentAction.next.length; i++) {
-                let nextActionName = currentAction.next[i];
-                console.log(currentActionName + " -> " + nextActionName);
+            for (let i = 0; i < action.next.length; i++) {
+                let nextActionName = action.next[i];
+                console.log(actionName + " -> " + nextActionName);
 
                 let nextAction = actions[nextActionName];
 
@@ -205,31 +207,30 @@ class Util {
                 }
 
                 // コネクタのfrom,toをセット(座標は後でセット)
-                compiledRecipe.connectors.push({
-                    from: { actionName: currentActionName },
+                connectors.push({
+                    from: { actionName: actionName },
                     to: { actionName: nextActionName }
                 });
 
                 // 手前アクションをセット
                 if (!nextAction.prev) {
-                    nextAction.prev = [currentActionName];
+                    nextAction.prev = [actionName];
                 } else {
-                    nextAction.prev.push(currentActionName);
+                    nextAction.prev.push(actionName);
                 }
-
             }
         }
 
         // 開始アクションの次のアクションを探す
-        for (let currentActionName in actions) {
-            if (!actions[currentActionName].prev && currentActionName !== "start") {
+        for (let actionName in actions) {
+            if (!actions[actionName].prev && actionName !== "start") {
                 // 開始アクションとのつながり(prev,next)をセット
-                actions[currentActionName].prev = ["start"];
-                actions.start.next.push(currentActionName);
+                actions[actionName].prev = ["start"];
+                actions.start.next.push(actionName);
                 // コネクタのfrom,toをセット(座標は後でセット)
                 connectors.push({
                     from: { actionName: "start" },
-                    to: { actionName: currentActionName }
+                    to: { actionName: actionName }
                 });
             }
         };
@@ -245,10 +246,10 @@ class Util {
         this.setSpread(compiledRecipe, "start", 0);
         console.log(compiledRecipe.actionMap);
         // 基準値および広がりから、具体的な座標を計算
-        for (let currentActionName in actions) {
-            let currentAction = actions[currentActionName];
-            currentAction.posX = c.wfPaddingX + currentAction.spread * c.wfMagnificationX;
-            currentAction.posY = c.wfPaddingY + currentAction.hierarchy * c.wfMagnificationY;
+        for (let actionName in actions) {
+            let action = actions[actionName];
+            action.posX = c.wfPaddingX + action.spread * c.wfMagnificationX;
+            action.posY = c.wfPaddingY + action.hierarchy * c.wfMagnificationY;
         };
 
         // コネクタの座標を計算
