@@ -3,14 +3,6 @@ import Const from './Const';
 const c = new Const();
 
 class Util {
-    test1() {
-        return "test1";
-    };
-
-    test2() {
-        console.log("test2");
-    };
-
     test3() {
         console.log("render!");
     };
@@ -50,7 +42,7 @@ class Util {
 
     // 各アクションの階層(縦位置)をセット
     setHierarchy(recipe, currentActionName, currentHierarchy) {
-        let currentAction = recipe.action[currentActionName];
+        let currentAction = recipe.actions[currentActionName];
 
         // 既にセットされていたら何もしない(分岐した後の合流を考慮)
         if (currentAction.hierarchy && currentAction.hierarchy >= currentHierarchy) {
@@ -70,7 +62,7 @@ class Util {
 
     // 各アクションの広がり(横位置)をセット
     setSpread(recipe, currentActionName, currentSpread) {
-        let currentAction = recipe.action[currentActionName];
+        let currentAction = recipe.actions[currentActionName];
 
         // 既にセットされていたら何もしない(分岐した後の合流を考慮)
         if (currentAction.spread != null) {
@@ -164,18 +156,18 @@ class Util {
 
         // 追加要素の初期化
         // 開始、終了ノード
-        compiledRecipe.action.start = { next: [] };
-        compiledRecipe.action.finish = {};
+        compiledRecipe.actions.start = { next: [] };
+        compiledRecipe.actions.finish = {};
         // アクション要素のマップ(どのアクションがどこにあるか)
         compiledRecipe.actionMap = [];
         // コネクタ情報
-        compiledRecipe.connector = [];
+        compiledRecipe.connectors = [];
 
         // 全アクション走査、初期設定
-        let action = compiledRecipe.action
-        for (let currentActionName in action) {
+        let actions = compiledRecipe.actions
+        for (let currentActionName in actions) {
             // 今見ているアクション
-            let currentAction = action[currentActionName];
+            let currentAction = actions[currentActionName];
 
             // 階層、広がりをリセットしておく
             currentAction.hierarchy = null;
@@ -195,14 +187,14 @@ class Util {
             }
 
             // 各アクションのタイトルをセットする
-            this.setActionTitle(compiledRecipe.material, compiledRecipe.container, currentAction);
+            this.setActionTitle(compiledRecipe.materials, compiledRecipe.containers, currentAction);
 
             // 次アクションに対してループ
             for (let i = 0; i < currentAction.next.length; i++) {
                 let nextActionName = currentAction.next[i];
                 console.log(currentActionName + " -> " + nextActionName);
 
-                let nextAction = action[nextActionName];
+                let nextAction = actions[nextActionName];
 
                 // 次アクションの実態がない場合はエラー
                 if (!nextAction) {
@@ -211,7 +203,7 @@ class Util {
                 }
 
                 // コネクタのfrom,toをセット(座標は後でセット)
-                compiledRecipe.connector.push({
+                compiledRecipe.connectors.push({
                     from: { actionName: currentActionName },
                     to: { actionName: nextActionName }
                 });
@@ -227,13 +219,13 @@ class Util {
         }
 
         // 開始アクションの次のアクションを探す
-        for (let currentActionName in action) {
-            if (!action[currentActionName].prev && currentActionName !== "start") {
+        for (let currentActionName in actions) {
+            if (!actions[currentActionName].prev && currentActionName !== "start") {
                 // 開始アクションとのつながり(prev,next)をセット
-                action[currentActionName].prev = ["start"];
-                action.start.next.push(currentActionName);
+                actions[currentActionName].prev = ["start"];
+                actions.start.next.push(currentActionName);
                 // コネクタのfrom,toをセット(座標は後でセット)
-                compiledRecipe.connector.push({
+                compiledRecipe.connectors.push({
                     from: { actionName: "start" },
                     to: { actionName: currentActionName }
                 });
@@ -244,26 +236,26 @@ class Util {
         // Y座標の基準値(階層)を計算
         this.setHierarchy(compiledRecipe, "start", 0);
         // X座標の基準値(広がり)を計算
-        let maxHierarchy = this.getObjectPropertyMax(compiledRecipe.action, "hierarchy");
+        let maxHierarchy = this.getObjectPropertyMax(compiledRecipe.actions, "hierarchy");
         for (let i = 0; i <= maxHierarchy; i++) {
             compiledRecipe.actionMap.push([]);
         }
         this.setSpread(compiledRecipe, "start", 0);
         console.log(compiledRecipe.actionMap);
         // 基準値および広がりから、具体的な座標を計算
-        for (let currentActionName in action) {
-            let currentAction = action[currentActionName];
+        for (let currentActionName in actions) {
+            let currentAction = actions[currentActionName];
             currentAction.posX = c.wfPaddingX + currentAction.spread * c.wfMagnificationX;
             currentAction.posY = c.wfPaddingY + currentAction.hierarchy * c.wfMagnificationY;
         };
 
         // コネクタの座標を計算
-        for (let i = 0; i < compiledRecipe.connector.length; i++) {
-            let connector = compiledRecipe.connector[i];
-            connector.from.posX = compiledRecipe.action[connector.from.actionName].posX + c.wfActionWidth / 2;
-            connector.from.posY = compiledRecipe.action[connector.from.actionName].posY + c.wfActionHeight;
-            connector.to.posX = compiledRecipe.action[connector.to.actionName].posX + c.wfActionWidth / 2;
-            connector.to.posY = compiledRecipe.action[connector.to.actionName].posY;
+        for (let i = 0; i < compiledRecipe.connectors.length; i++) {
+            let connector = compiledRecipe.connectors[i];
+            connector.from.posX = compiledRecipe.actions[connector.from.actionName].posX + c.wfActionWidth / 2;
+            connector.from.posY = compiledRecipe.actions[connector.from.actionName].posY + c.wfActionHeight;
+            connector.to.posX = compiledRecipe.actions[connector.to.actionName].posX + c.wfActionWidth / 2;
+            connector.to.posY = compiledRecipe.actions[connector.to.actionName].posY;
         }
         return compiledRecipe;
     }

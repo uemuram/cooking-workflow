@@ -10,8 +10,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       value: "",
-      recipe: { container: {}, material: {}, action: {} },
-      compiledRecipe: { container: {}, material: {}, action: {}, connector: [] }
+      recipe: { containers: {}, materials: {}, actions: {} },
+      compiledRecipe: { containers: {}, materials: {}, actions: {}, connectors: [] }
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,9 +20,9 @@ class App extends React.Component {
         let json = {
           title: "xx料理",
           description: "yyをzzした料理です",
-          container: {},
-          material: {},
-          action: {
+          containers: {},
+          materials: {},
+          actions: {
             a: {
               next: "c"
             },

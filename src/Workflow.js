@@ -22,16 +22,16 @@ class Workflow extends React.Component {
 
   // アクションを描画する
   renderAction() {
-    let action = this.props.compiledRecipe.action;
-    let material = this.props.compiledRecipe.material;
+    let actions = this.props.compiledRecipe.actions;
+    let materials = this.props.compiledRecipe.materials;
     let components = [];
 
     // 各アクションをコンポーネント化する
-    for (let currentActionName in action) {
-      let currentAction = action[currentActionName];
+    for (let currentActionName in actions) {
+      let currentAction = actions[currentActionName];
       components.push(
         <Action key={currentActionName} 
-         action={currentAction} material={material}/>
+         action={currentAction} material={materials}/>
       );
     }
     return components;
@@ -39,11 +39,11 @@ class Workflow extends React.Component {
 
   // アクションをつなぐコネクタを描画する
   renderActionConnector(){
-    let connector = this.props.compiledRecipe.connector;
+    let connectors = this.props.compiledRecipe.connectors;
     let components = [];
 
-    for(let i=0; i<connector.length; i++){
-      let currentConnector = connector[i];
+    for(let i=0; i<connectors.length; i++){
+      let currentConnector = connectors[i];
       components.push(
         <line x1={currentConnector.from.posX} y1={currentConnector.from.posY} 
               x2={currentConnector.to.posX} y2={currentConnector.to.posY}
