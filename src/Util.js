@@ -245,20 +245,66 @@ class Util {
         }
         this.setSpread(compiledRecipe, "start", 0);
         console.log(compiledRecipe.actionMap);
+
         // 基準値および広がりから、具体的な座標を計算
         for (let actionName in actions) {
             let action = actions[actionName];
-            action.posX = c.wfPaddingX + action.spread * c.wfMagnificationX;
-            action.posY = c.wfPaddingY + action.hierarchy * c.wfMagnificationY;
+            let drawing = {};
+
+            // 中心座標
+            drawing.posX = c.wfPaddingX + action.spread * c.wfMagnificationX;
+            drawing.posY = c.wfPaddingY + action.hierarchy * c.wfMagnificationY;
+
+            // アクション種別に応じた形状設定
+            if (actionName === "start" || actionName === "finish") {
+                // 開始、終了アクションの場合は丸
+                drawing.form = "circle";
+                // 半径
+                drawing.radius = c.wfActionRadius;
+            } else {
+                // それ以外は四角
+                drawing.form = "square";
+                // 大きさ
+                drawing.width = c.wfActionWidth;
+                drawing.height = c.wfActionHeight;
+            }
+            action.drawing = drawing;
         };
 
         // コネクタの座標を計算
         for (let i = 0; i < connectors.length; i++) {
             let connector = connectors[i];
-            connector.from.posX = actions[connector.from.actionName].posX + c.wfActionWidth / 2;
-            connector.from.posY = actions[connector.from.actionName].posY + c.wfActionHeight;
-            connector.to.posX = actions[connector.to.actionName].posX + c.wfActionWidth / 2;
-            connector.to.posY = actions[connector.to.actionName].posY;
+            let fromAction = actions[connector.from.actionName];
+            let toAction = actions[connector.to.actionName];
+
+            // コネクタがつなぐオブジェクトの中心座標からの距離を計算
+            let fromDistanceY = 0;
+            let toDistanceY = 0;
+            switch (fromAction.drawing.form) {
+                case "circle":
+                    fromDistanceY = fromAction.drawing.radius;
+                    break;
+                case "square":
+                    fromDistanceY = fromAction.drawing.height / 2;
+                    break;
+                default:
+                    break;
+            }
+
+            switch (toAction.drawing.form) {
+                case "circle":
+                    toDistanceY = toAction.drawing.radius;
+                    break;
+                case "square":
+                    toDistanceY = toAction.drawing.height / 2;
+                    break;
+                default:
+                    break;
+            }
+            connector.from.posX = fromAction.drawing.posX;
+            connector.from.posY = fromAction.drawing.posY + fromDistanceY;
+            connector.to.posX = toAction.drawing.posX;
+            connector.to.posY = toAction.drawing.posY - toDistanceY;
         }
         return compiledRecipe;
     }

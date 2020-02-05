@@ -1,7 +1,5 @@
 import React from 'react';
 import './Workflow.css';
-import Const from './Const';
-const c = new Const();
 
 class Action extends React.Component {
 
@@ -10,20 +8,35 @@ class Action extends React.Component {
     this.state = {};
   }
 
-  render() {
-    return (
-      <g>
-
-        <rect x={this.props.action.posX} y={this.props.action.posY}
-          width={c.wfActionWidth} height={c.wfActionHeight} 
+  // 描画
+  drawAction() {
+    let drawing = this.props.action.drawing
+    if (drawing.form === "circle") {
+      // 円の場合
+      return <g>
+        <circle cx={drawing.posX} cy={drawing.posY} r={drawing.radius}
+          stroke="blue" fill="white" strokeWidth="2" />
+      </g>
+    } else if (drawing.form === "square") {
+      // 矩形の場合
+      return <g>
+        <rect x={drawing.posX - drawing.width / 2} y={drawing.posY - drawing.height / 2}
+          width={drawing.width} height={drawing.height}
           stroke="green" fill="white"
           strokeWidth="2" />
 
-        <foreignObject x={this.props.action.posX +2} y={this.props.action.posY}
-          width={c.wfActionWidth} height={c.wfActionHeight} >
+        <foreignObject x={drawing.posX - drawing.width / 2} y={drawing.posY - drawing.height / 2}
+          width={drawing.width} height={drawing.height} >
           <div>{this.props.action.title}</div>
         </foreignObject>
+      </g>
+    }
+  }
 
+  render() {
+    return (
+      <g>
+        {this.drawAction()}
       </g>
     );
   }
