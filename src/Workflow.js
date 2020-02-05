@@ -43,12 +43,12 @@ class Workflow extends React.Component {
     let components = [];
 
     for(let i=0; i<connectors.length; i++){
-      let currentConnector = connectors[i];
+      let connector = connectors[i];
       components.push(
-        <line x1={currentConnector.from.posX} y1={currentConnector.from.posY} 
-              x2={currentConnector.to.posX} y2={currentConnector.to.posY}
+        <line x1={connector.from.posX} y1={connector.from.posY} 
+              x2={connector.to.posX} y2={connector.to.posY}
               stroke="black" strokeWidth="1" 
-              key={currentConnector.from.actionName + "_" + currentConnector.to.actionName} />
+              key={connector.from.actionName + "_" + connector.to.actionName} />
       );
     }
     return components;
