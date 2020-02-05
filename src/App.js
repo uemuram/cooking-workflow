@@ -76,10 +76,6 @@ class App extends React.Component {
       });
   }
 
-  renderWorkflow() {
-    return <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} />
-  }
-
   buttonOnClick() {
     console.log("buttonOnClick!");
 
@@ -91,18 +87,16 @@ class App extends React.Component {
 
     this.setState({ recipe: newRecipe });
     this.setState({ compiledRecipe: newCompiledRecipe });
+  }
 
-
-    // 要素を加工する。配下にも伝搬する。
-    // let newRecipe = Object.assign({}, this.state.recipe);
-    // newRecipe.title = newRecipe.title + 'x';
-    // this.setState({recipe: newRecipe});
-
-    // 普通のアラートを出す。→クライアントサイドで動いているようだ
-    // alert("ok!");
-
-    // 全部消す。配下にも伝搬する。
-    //this.setState({recipe:{}});
+  // テスト用
+  buttonOnClick2() {
+    console.log("buttonOnClick2!");
+    // 要素加工のテスト
+    let newCompiledRecipe = Object.assign({}, this.state.compiledRecipe);
+    newCompiledRecipe.title = "aaa";
+    newCompiledRecipe.actions.addOnionToPot.drawing.width += 10;
+    this.setState({ compiledRecipe: newCompiledRecipe });
   }
 
   handleChange(event) {
@@ -117,8 +111,9 @@ class App extends React.Component {
             <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
             <br />
             <button type="button" onClick={() => this.buttonOnClick()}>何らかのボタン</button>
+            <button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>
           </form>
-          {this.renderWorkflow()}
+          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} />
         </div >
       </div>
     )
