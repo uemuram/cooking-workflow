@@ -161,7 +161,7 @@ class Util {
         // 追加要素の初期化
         // 開始、終了ノード
         actions.start = { next: [] };
-        actions.finish = {};
+        actions.finish = { depend: [] };
         // アクション要素のマップ(どのアクションがどこにあるか)
         compiledRecipe.actionMap = [];
         // コネクタ情報
@@ -177,12 +177,12 @@ class Util {
             action.hierarchy = null;
             action.spread = null;
 
-            if (actionName === "finish") {
+            if (actionName === "start") {
                 continue;
             }
             // 次アクションが単一の場合は配列にしておく
-            if (!this.isArray(action.next)) {
-                action.next = [action.next];
+            if (!this.isArray(action.depend)) {
+                action.depend = [action.depend];
             }
 
             // ソースが単一の場合は配列にしておく
@@ -193,44 +193,46 @@ class Util {
             // 各アクションのタイトルをセットする
             this.setActionTitle(materials, containers, action);
 
-            // 次アクションに対してループ
-            for (let i = 0; i < action.next.length; i++) {
-                let nextActionName = action.next[i];
-                console.log(actionName + " -> " + nextActionName);
-
-                let nextAction = actions[nextActionName];
+            // 手前アクションに対してループ
+            for (let i = 0; i < action.depend.length; i++) {
+                let dependActionName = action.depend[i];
+                if (!dependActionName) {
+                    dependActionName = "start";
+                }
+                console.log(dependActionName + " -> " + actionName);
+                let dependAction = actions[dependActionName];
 
                 // 次アクションの実態がない場合はエラー
-                if (!nextAction) {
-                    console.log("Error : 次アクションなし");
+                if (!dependAction) {
+                    console.log("Error : 手前アクションなし");
                     continue;
                 }
 
                 // コネクタのfrom,toをセット(座標は後でセット)
                 connectors.push({
-                    from: { actionName: actionName },
-                    to: { actionName: nextActionName }
+                    from: { actionName: dependActionName },
+                    to: { actionName: actionName }
                 });
 
                 // 手前アクションをセット
-                if (!nextAction.prev) {
-                    nextAction.prev = [actionName];
+                if (!dependAction.next) {
+                    dependAction.next = [actionName];
                 } else {
-                    nextAction.prev.push(actionName);
+                    dependAction.next.push(actionName);
                 }
             }
         }
 
-        // 開始アクションの次のアクションを探す
+        // 終了アクションの手前アクションを探す
         for (let actionName in actions) {
-            if (!actions[actionName].prev && actionName !== "start") {
+            if (!actions[actionName].next && actionName !== "finish") {
                 // 開始アクションとのつながり(prev,next)をセット
-                actions[actionName].prev = ["start"];
-                actions.start.next.push(actionName);
+                actions[actionName].next = ["finish"];
+                actions.finish.depend.push(actionName);
                 // コネクタのfrom,toをセット(座標は後でセット)
                 connectors.push({
-                    from: { actionName: "start" },
-                    to: { actionName: actionName }
+                    from: { actionName: actionName },
+                    to: { actionName: "finish" }
                 });
             }
         };
