@@ -370,7 +370,7 @@ class Util {
             // 素材が重なっている場合はfrom優先
             if (materialObjects[i].fromAction) {
                 drawing.posX = actions[materialObjects[i].fromAction].drawing.posX + 30;
-                drawing.posY = actions[materialObjects[i].fromAction].drawing.posY + 50;
+                drawing.posY = actions[materialObjects[i].fromAction].drawing.posY + 40;
             } else {
                 drawing.posX = actions[materialObjects[i].toAction].drawing.posX + 30 + actionSourceMaterialCount[materialObjects[i].toAction] * 10;
                 drawing.posY = actions[materialObjects[i].toAction].drawing.posY - 50;
