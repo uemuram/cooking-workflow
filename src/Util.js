@@ -106,7 +106,7 @@ class Util {
         let materialNames = [];
         // 素材の一覧を取得
         for (let i = 0; i < action.source.length; i++) {
-            materialNames.push(material[action.source[i]].name);
+            materialNames.push(material[action.source[i]].title);
         }
         return materialNames.length > limit ?
             materialNames.slice(0, limit).join(",") + "など" :
@@ -124,16 +124,16 @@ class Util {
         switch (action.type) {
             case "add":
                 title = this.getSourceStr(action, material, 2) + "を" +
-                    container[action.target].name + "に加える";
+                    container[action.target].title + "に加える";
                 break;
             case "serve":
                 title = "盛り付ける";
                 break;
             case "cookRice":
-                title = material[action.source].name + "を炊く";
+                title = material[action.source].title + "を炊く";
                 break;
             case "cut":
-                title = material[action.source].name + "を切る";
+                title = material[action.source].title + "を切る";
                 break;
             case "stew":
                 title = this.getExitConditionStr(action) + "煮込む";
