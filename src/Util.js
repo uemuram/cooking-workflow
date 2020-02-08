@@ -150,15 +150,15 @@ class Util {
         action.title = title;
     }
 
-    compileRecipe(recipe) {
 
-        // 変更対象要素
-        let compiledRecipe = Object.assign({}, recipe);
+    // レシピのアクション部分をコンパイルする
+    compileRecipeActions(compiledRecipe) {
+        // 要素
         let actions = compiledRecipe.actions;
         let materials = compiledRecipe.materials;
         let containers = compiledRecipe.containers;
 
-        // 追加要素の初期化
+        // 追加要素の初期化(アクション関連)
         // 開始、終了ノード
         actions.start = { next: [] };
         actions.finish = { depend: [] };
@@ -308,7 +308,96 @@ class Util {
             connector.to.posX = toAction.drawing.posX;
             connector.to.posY = toAction.drawing.posY - toDistanceY;
         }
+    }
+
+    // レシピの素材部分をコンパイルする
+    compileRecipeMaterials(compiledRecipe) {
+        // 要素
+        let actions = compiledRecipe.actions;
+        // let materials = compiledRecipe.materials;
+        // let containers = compiledRecipe.containers;
+
+        // 追加要素の初期化(素材関連)
+        // 素材の実態
+        compiledRecipe.materialObjects = [];
+        let materialObjects = compiledRecipe.materialObjects;
+
+        // アクション名ごとに、紐づいた素材の数をカウントしておく
+        let actionSourceMaterialCount = {};
+
+        // アクションのsource,targetから、素材の実体を生成する。
+        for (let actionName in actions) {
+            if (actionName === "start" || actionName === "finish") {
+                continue;
+            }
+
+            // 後で使うため初期化
+            actionSourceMaterialCount[actionName] = 0;
+
+            let action = actions[actionName];
+            // アクションからみてsourceとなっている素材
+            if (action.source) {
+                for (let i = 0; i < action.source.length; i++) {
+                    materialObjects.push({
+                        name: action.source[i],
+                        toAction: actionName
+                    })
+                }
+            };
+            // アクションから見てtargetとなっている素材
+            if (action.target) {
+                materialObjects.push({
+                    name: action.target,
+                    fromAction: actionName
+                })
+            } else if (action.source && action.source.length === 1) {
+                // ターゲットとなる素材がない場合は、ソースをそのままターゲットにする
+                materialObjects.push({
+                    name: action.source[0],
+                    fromAction: actionName
+                })
+            };
+        }
+
+        // 素材を集約する
+        // TODO
+
+        console.log(materialObjects);
+        // 各素材の座標を計算する
+        for (let i = 0; i < materialObjects.length; i++) {
+            let drawing = {};
+
+            // 素材が重なっている場合はfrom優先
+            if (materialObjects[i].fromAction) {
+                drawing.posX = actions[materialObjects[i].fromAction].drawing.posX + 30;
+                drawing.posY = actions[materialObjects[i].fromAction].drawing.posY + 50;
+            } else {
+                drawing.posX = actions[materialObjects[i].toAction].drawing.posX + 30 + actionSourceMaterialCount[materialObjects[i].toAction] * 10;
+                drawing.posY = actions[materialObjects[i].toAction].drawing.posY - 50;
+                actionSourceMaterialCount[materialObjects[i].toAction]++;
+            }
+            materialObjects[i].drawing = drawing;
+        }
+
+        //console.log(actionSourceMaterialCount);
+
+    }
+
+    // レシピをコンパイルする
+    compileRecipe(recipe) {
+
+        // コンパイル済みレシピを生成
+        let compiledRecipe = Object.assign({}, recipe);
+
+        // アクション関連のコンパイル
+        this.compileRecipeActions(compiledRecipe);
+        // 素材関連のコンパイル
+        this.compileRecipeMaterials(compiledRecipe);
+
+
         return compiledRecipe;
+
+
     }
 }
 export default Util;

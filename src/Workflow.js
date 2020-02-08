@@ -23,15 +23,13 @@ class Workflow extends React.Component {
   // アクションを描画する
   renderAction() {
     let actions = this.props.compiledRecipe.actions;
-    let materials = this.props.compiledRecipe.materials;
     let components = [];
 
     // 各アクションをコンポーネント化する
     for (let currentActionName in actions) {
       let currentAction = actions[currentActionName];
       components.push(
-        <Action key={currentActionName} 
-         action={currentAction} material={materials}/>
+        <Action key={currentActionName} action={currentAction}/>
       );
     }
     return components;
@@ -56,10 +54,21 @@ class Workflow extends React.Component {
 
 
   renderMaterial() {
-    return [
-      <Material left={300} top={5} key={"aaa"} updateState={this.updateState.bind(this)} />,
-      <Material left={310} top={10} key={"bbb"} updateState={this.updateState.bind(this)} />
-    ]
+    let materialObjects = this.props.compiledRecipe.materialObjects;
+    let components = [];
+
+    // 各アクションをコンポーネント化する
+    for (let i=0; i<materialObjects.length; i++){
+      let materialObject = materialObjects[i];
+      components.push(
+        <Material key={i} materialObject={materialObject}/>
+      );
+    }
+    return components;
+    // return [
+    //   <Material key={"aaa"} materialObje/>,
+    //   <Material key={"bbb"} />
+    // ]
   }
 
   render() {
@@ -72,7 +81,7 @@ class Workflow extends React.Component {
         <svg className="WorkflowSvg">
           {this.renderAction()}
           {this.renderActionConnector()}
-          {/* this.renderMaterial() */}
+          {this.renderMaterial()}
         </svg>
 
         {util.test3()}

@@ -11,7 +11,7 @@ class App extends React.Component {
     this.state = {
       value: "",
       recipe: { containers: {}, materials: {}, actions: {} },
-      compiledRecipe: { containers: {}, materials: {}, actions: {}, connectors: [] }
+      compiledRecipe: { containers: {}, materials: {}, actions: {}, connectors: [], materialObjects: {} }
     }
 
     this.handleChange = this.handleChange.bind(this);
