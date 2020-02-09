@@ -16,6 +16,14 @@ class Const {
         // ワークフローの開始、終了アクションの半径
         this.wfActionRadius = 10;
 
+
+        this.wfMaterialTypes = {
+            "onion" :{
+                category : ["vegetable"],
+                image : "onion.jpg"
+            }
+        }
+
     }
 
 }
