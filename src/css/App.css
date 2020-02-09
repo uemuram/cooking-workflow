@@ -8,6 +8,13 @@
   font-size: small;
 }
 
+.MessageTextArea {
+  width: 300px;
+  height: 100px;
+  font-size: small;
+  color: #ff0000;
+}
+
 .Flex {
   display: -webkit-flex;
   display: flex;

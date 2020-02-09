@@ -150,7 +150,6 @@ class Util {
         action.title = title;
     }
 
-
     // レシピのアクション部分をコンパイルする
     compileRecipeActions(compiledRecipe) {
         // 要素
@@ -383,21 +382,64 @@ class Util {
 
     }
 
+    // 各素材の名前をセットする
+    setMaterialTitle(materials) {
+        for (let materialName in materials) {
+            let material = materials[materialName];
+            if (!material.title) {
+                material.title = c.wfMaterialTypes[material.type].title;
+            }
+        }
+    }
+
+    // 文法エラーオブジェクトを返却
+    getSyntaxErrorObj(targetStr, messageStr) {
+        return new SyntaxError(targetStr + " : " + messageStr);
+    }
+
+    // 文法チェック(必須チェック等)
+    checkRecipeGrammar(recipe) {
+        // 第1階層必須チェック
+        if (!recipe.title) {
+            throw this.getSyntaxErrorObj("title", "title要素は必須です");
+        }
+        if (!recipe.materials) {
+            throw this.getSyntaxErrorObj("materials", "materials要素は必須です");
+        }
+
+        // 素材必須チェック
+        for (let materialName in recipe.materials) {
+            let material = recipe.materials[materialName];
+            if (!material.type) {
+                throw this.getSyntaxErrorObj(materialName, "type要素は必須です");
+            }
+            if (material.type !== "custom" && !c.wfMaterialTypes[material.type]) {
+                throw this.getSyntaxErrorObj(materialName, "素材タイプ「" + material.type + "」は存在しません");
+            }
+            if (material.type === "custom" && !material.title) {
+                throw this.getSyntaxErrorObj(materialName, "素材タイプが「custom」の場合、titleは必須です");
+            }
+        }
+    }
+
     // レシピをコンパイルする
     compileRecipe(recipe) {
-
         // コンパイル済みレシピを生成
         let compiledRecipe = Object.assign({}, recipe);
-
-        // アクション関連のコンパイル
-        this.compileRecipeActions(compiledRecipe);
-        // 素材関連のコンパイル
-        this.compileRecipeMaterials(compiledRecipe);
-
-
+        try {
+            // 文法チェック
+            this.checkRecipeGrammar(recipe);
+            // 素材の名前をセット
+            this.setMaterialTitle(compiledRecipe.materials);
+            // アクション関連のコンパイル
+            this.compileRecipeActions(compiledRecipe);
+            // 素材関連のコンパイル
+            this.compileRecipeMaterials(compiledRecipe);
+        } catch (e) {
+            console.log(e);
+            throw (e);
+        }
         return compiledRecipe;
-
-
     }
 }
 export default Util;

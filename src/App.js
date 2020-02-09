@@ -10,63 +10,12 @@ class App extends React.Component {
     super(props);
     this.state = {
       value: "",
+      message: "",
       recipe: { containers: {}, materials: {}, actions: {} },
       compiledRecipe: { containers: {}, materials: {}, actions: {}, connectors: [], materialObjects: {} }
     }
 
     this.handleChange = this.handleChange.bind(this);
-
-    /*
-        let json = {
-          title: "xx料理",
-          description: "yyをzzした料理です",
-          containers: {},
-          materials: {},
-          actions: {
-            a: {
-              next: "c"
-            },
-            b: {
-              next: [
-                "d"
-              ]
-            },
-            c: {
-              next: ["e", "f"]
-            },
-            d: {
-              next: [
-                "g"
-              ]
-            },
-            e: {
-              next: "j"
-            },
-            f: {
-              next: ["h", "i"]
-            },
-            g: {
-              next: [
-                "finish"
-              ]
-            },
-            h: {
-              next: "j"
-            },
-            i: {
-              next: "k"
-            },
-            j: {
-              next: "k"
-            },
-            k: {
-              next: "finish"
-            }
-          }
-        };
-        this.state.recipe = json;
-        this.state.value = JSON.stringify(json, null, 2);
-    */
 
     fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
       .then(response => response.json())
@@ -79,12 +28,26 @@ class App extends React.Component {
   buttonOnClick() {
     console.log("buttonOnClick!");
 
-    // 要素を加工する。配下にも伝搬する。
-    let newRecipe = JSON.parse(this.state.value);
-    let newCompiledRecipe = util.compileRecipe(newRecipe);
+    // JSON形式として正しいかのみチェック
+    let newRecipe;
+    try {
+      newRecipe = JSON.parse(this.state.value);
+    } catch (e) {
+      this.setState({ message: e.message });
+      return;
+    }
 
+    // レシピをコンパイルする
+    let newCompiledRecipe;
+    try {
+      newCompiledRecipe = util.compileRecipe(newRecipe);
+    } catch (e) {
+      this.setState({ message: e.message });
+      return;
+    }
+
+    // コンパイル成功した場合はデータ更新
     console.log(JSON.stringify(newCompiledRecipe, null, 2));
-
     this.setState({ recipe: newRecipe });
     this.setState({ compiledRecipe: newCompiledRecipe });
   }
@@ -112,6 +75,8 @@ class App extends React.Component {
             <br />
             <button type="button" onClick={() => this.buttonOnClick()}>何らかのボタン</button>
             <button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>
+            <br /><br />
+            <textarea readOnly value={this.state.message} className="MessageTextArea" />
           </form>
           <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} />
         </div >
