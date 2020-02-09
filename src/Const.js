@@ -10,7 +10,7 @@ class Const {
         this.wfMagnificationY = 100;
 
         // ワークフローの基本Actionのサイズ
-        this.wfActionWidth = 120;
+        this.wfActionWidth = 100;
         this.wfActionHeight = 50;
 
         // ワークフローの開始、終了アクションの半径

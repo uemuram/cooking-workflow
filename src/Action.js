@@ -27,7 +27,7 @@ class Action extends React.Component {
 
         <foreignObject x={drawing.posX - drawing.width / 2} y={drawing.posY - drawing.height / 2}
           width={drawing.width} height={drawing.height} >
-          <div>{this.props.action.title}</div>
+          <div className="ActionText">{this.props.action.title}</div>
         </foreignObject>
       </g>
     }
