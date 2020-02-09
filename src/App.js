@@ -48,6 +48,7 @@ class App extends React.Component {
 
     // コンパイル成功した場合はデータ更新
     console.log(JSON.stringify(newCompiledRecipe, null, 2));
+    this.setState({ message: "" });
     this.setState({ recipe: newRecipe });
     this.setState({ compiledRecipe: newCompiledRecipe });
   }
