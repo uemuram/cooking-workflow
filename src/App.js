@@ -1,5 +1,5 @@
 import React from 'react';
-import './Workflow.css';
+import './css/Workflow.css';
 import Workflow from './Workflow';
 import Util from './Util';
 const util = new Util();

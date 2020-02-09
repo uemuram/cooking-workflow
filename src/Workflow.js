@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
-import './Workflow.css';
+import './css/App.css';
+import './css/Workflow.css';
 import Material from './Material';
 import Action from './Action';
 import Util from './Util';

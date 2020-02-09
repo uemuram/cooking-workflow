@@ -1,5 +1,5 @@
 import React from 'react';
-import './Workflow.css';
+import './css/Workflow.css';
 
 
 class Material extends React.Component {
