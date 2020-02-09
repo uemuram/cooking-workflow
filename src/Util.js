@@ -401,23 +401,26 @@ class Util {
     checkRecipeGrammar(recipe) {
         // 第1階層必須チェック
         if (!recipe.title) {
-            throw this.getSyntaxErrorObj("title", "title要素は必須です");
+            throw this.getSyntaxErrorObj("title", "title要素は必須です。");
         }
+        if (typeof recipe.title !== "string") {
+            throw this.getSyntaxErrorObj("title", "title要素は文字列型の必要があります。");
+        };
         if (!recipe.materials) {
-            throw this.getSyntaxErrorObj("materials", "materials要素は必須です");
+            throw this.getSyntaxErrorObj("materials", "materials要素は必須です。");
         }
 
         // 素材必須チェック
         for (let materialName in recipe.materials) {
             let material = recipe.materials[materialName];
             if (!material.type) {
-                throw this.getSyntaxErrorObj(materialName, "type要素は必須です");
+                throw this.getSyntaxErrorObj(materialName, "type要素は必須です。");
             }
             if (material.type !== "custom" && !c.wfMaterialTypes[material.type]) {
-                throw this.getSyntaxErrorObj(materialName, "素材タイプ「" + material.type + "」は存在しません");
+                throw this.getSyntaxErrorObj(materialName, "素材タイプ「" + material.type + "」は存在しません。存在する素材タイプ、もしくは「custom」を指定してください。");
             }
             if (material.type === "custom" && !material.title) {
-                throw this.getSyntaxErrorObj(materialName, "素材タイプが「custom」の場合、titleは必須です");
+                throw this.getSyntaxErrorObj(materialName, "素材タイプが「custom」の場合、title要素は必須です。");
             }
         }
     }
