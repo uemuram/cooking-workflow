@@ -1,6 +1,10 @@
 class Const {
     constructor() {
 
+        this.imageParentPath = "/image";
+        this.containerImagePath = this.imageParentPath + "/container";
+        this.materialImagePath = this.imageParentPath + "/material";
+
         // ワークフローの描画開始位置(左上の座標)
         this.wfPaddingX = 100;
         this.wfPaddingY = 30;
@@ -16,6 +20,16 @@ class Const {
         // ワークフローの開始、終了アクションの半径
         this.wfActionRadius = 10;
 
+        this.wfContainerTypes = {
+            "pot": {
+                title: "鍋",
+                image: "pot.png",
+            },
+            "riceBowl": {
+                title: "どんぶり",
+                image: "riceBowl.png",
+            },
+        }
 
         this.wfMaterialTypes = {
             "beef": {
@@ -23,10 +37,10 @@ class Const {
                 category: ["meet"],
                 image: "beef.png",
             },
-            "gingerTube": {
+            "ginger_tube": {
                 title: "チューブ生姜",
                 category: ["vegetable", "seasoning"],
-                image: "gingerTube.png",
+                image: "ginger_tube.png",
             },
             "mirin": {
                 title: "本みりん",

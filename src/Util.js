@@ -127,7 +127,7 @@ class Util {
                     container[action.target].title + "に加える";
                 break;
             case "serve":
-                title = "盛り付ける";
+                title = container[action.target].title + "に盛り付ける";
                 break;
             case "cookRice":
                 title = material[action.source].title + "を炊く";
@@ -313,8 +313,8 @@ class Util {
     compileRecipeMaterials(compiledRecipe) {
         // 要素
         let actions = compiledRecipe.actions;
-        // let materials = compiledRecipe.materials;
-        // let containers = compiledRecipe.containers;
+        let materials = compiledRecipe.materials;
+        let containers = compiledRecipe.containers;
 
         // 追加要素の初期化(素材関連)
         // 素材の実態
@@ -362,24 +362,43 @@ class Util {
         // TODO
 
         console.log(materialObjects);
-        // 各素材の座標を計算する
+        // 各素材の描画除法を整備する
         for (let i = 0; i < materialObjects.length; i++) {
             let drawing = {};
+            let materialObject = materialObjects[i];
 
+            // 座標計算
             // 素材が重なっている場合はfrom優先
-            if (materialObjects[i].fromAction) {
-                drawing.posX = actions[materialObjects[i].fromAction].drawing.posX + 30;
-                drawing.posY = actions[materialObjects[i].fromAction].drawing.posY + 40;
+            if (materialObject.fromAction) {
+                drawing.posX = actions[materialObject.fromAction].drawing.posX + 30;
+                drawing.posY = actions[materialObject.fromAction].drawing.posY + 40;
             } else {
-                drawing.posX = actions[materialObjects[i].toAction].drawing.posX + 30 + actionSourceMaterialCount[materialObjects[i].toAction] * 10;
-                drawing.posY = actions[materialObjects[i].toAction].drawing.posY - 50;
-                actionSourceMaterialCount[materialObjects[i].toAction]++;
+                drawing.posX = actions[materialObject.toAction].drawing.posX + 30 + actionSourceMaterialCount[materialObject.toAction] * 10;
+                drawing.posY = actions[materialObject.toAction].drawing.posY - 50;
+                actionSourceMaterialCount[materialObject.toAction]++;
+            }
+
+            // タイプセット
+            if (materials[materialObject.name]) {
+                drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[materials[materialObject.name].type].image;
+            } else {
+                drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[containers[materialObject.name].type].image;
             }
             materialObjects[i].drawing = drawing;
         }
 
         //console.log(actionSourceMaterialCount);
 
+    }
+
+    // 各コンテナの名前をセットする
+    setContainerTitle(containers) {
+        for (let containerNames in containers) {
+            let container = containers[containerNames];
+            if (!container.title) {
+                container.title = c.wfContainerTypes[container.type].title;
+            }
+        }
     }
 
     // 各素材の名前をセットする
@@ -410,6 +429,20 @@ class Util {
             throw this.getSyntaxErrorObj("materials", "materials要素は必須です。");
         }
 
+        // コンテナ必須チェック
+        for (let containerName in recipe.containers) {
+            let container = recipe.containers[containerName];
+            if (!container.type) {
+                throw this.getSyntaxErrorObj(containerName, "type要素は必須です。");
+            }
+            if (container.type !== "custom" && !c.wfContainerTypes[container.type]) {
+                throw this.getSyntaxErrorObj(containerName, "コンテナタイプ「" + container.type + "」は存在しません。存在するコンテナタイプ、もしくは「custom」を指定してください。");
+            }
+            if (container.type === "custom" && !container.title) {
+                throw this.getSyntaxErrorObj(containerName, "コンテナタイプが「custom」の場合、title要素は必須です。");
+            }
+        }
+
         // 素材必須チェック
         for (let materialName in recipe.materials) {
             let material = recipe.materials[materialName];
@@ -423,6 +456,19 @@ class Util {
                 throw this.getSyntaxErrorObj(materialName, "素材タイプが「custom」の場合、title要素は必須です。");
             }
         }
+
+        // 素材名とコンテナ名の重複チェック
+        for (let containerName in recipe.containers) {
+            for (let materialName in recipe.materials) {
+                if (containerName === materialName) {
+                    throw this.getSyntaxErrorObj(containerName, "素材とコンテナの名称が重複しています");
+                }
+            }
+        }
+
+
+
+
     }
 
     // レシピをコンパイルする
@@ -432,6 +478,9 @@ class Util {
         try {
             // 文法チェック
             this.checkRecipeGrammar(recipe);
+            // コンテナの名前をセット
+            // 素材の名前をセット
+            this.setContainerTitle(compiledRecipe.containers);
             // 素材の名前をセット
             this.setMaterialTitle(compiledRecipe.materials);
             // アクション関連のコンパイル
@@ -439,6 +488,7 @@ class Util {
             // 素材関連のコンパイル
             this.compileRecipeMaterials(compiledRecipe);
         } catch (e) {
+            console.log(compiledRecipe);
             console.log(e);
             throw (e);
         }

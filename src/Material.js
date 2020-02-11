@@ -14,12 +14,9 @@ class Material extends React.Component {
     let drawing = this.props.materialObject.drawing
 
     return <g>
-      <circle cx={drawing.posX} cy={drawing.posY} r={20}
-        stroke="brown" fill="white" strokeWidth="2" />
-
       <foreignObject x={drawing.posX - 50 / 2} y={drawing.posY - 50 / 2}
-          width={50} height={50} >
-          <img src={`${process.env.PUBLIC_URL}/image/material/onion.png`} alt="onion" width={50} />;
+        width={50} height={50} >
+        <img src={process.env.PUBLIC_URL + drawing.image} alt="onion" width={50} />;
       </foreignObject>
     </g>
 
