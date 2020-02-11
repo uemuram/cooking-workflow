@@ -361,23 +361,20 @@ class Util {
         // 素材を集約する
         // TODO
 
-        console.log(cookObjects);
         // 各素材の描画除法を整備する
         for (let i = 0; i < cookObjects.length; i++) {
             let drawing = {};
             let cookObject = cookObjects[i];
-
             // 座標計算
             // 素材が重なっている場合はfrom優先
             if (cookObject.fromAction) {
-                drawing.posX = actions[cookObject.fromAction].drawing.posX + 30;
-                drawing.posY = actions[cookObject.fromAction].drawing.posY + 40;
+                drawing.posX = actions[cookObject.fromAction].drawing.posX + c.wfCookObjectActionDistanceX;
+                drawing.posY = actions[cookObject.fromAction].drawing.posY + c.wfCookObjectActionDistanceY;
             } else {
-                drawing.posX = actions[cookObject.toAction].drawing.posX + 30 + actionSourceMaterialCount[cookObject.toAction] * 10;
-                drawing.posY = actions[cookObject.toAction].drawing.posY - 50;
+                drawing.posX = actions[cookObject.toAction].drawing.posX + c.wfCookObjectActionDistanceX + actionSourceMaterialCount[cookObject.toAction] * c.wfOverlapCookObjectMagnificationX;
+                drawing.posY = actions[cookObject.toAction].drawing.posY - c.wfCookObjectActionDistanceY + actionSourceMaterialCount[cookObject.toAction] * c.wfOverlapCookObjectMagnificationY;
                 actionSourceMaterialCount[cookObject.toAction]++;
             }
-
             // タイプセット
             if (materials[cookObject.name]) {
                 drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[materials[cookObject.name].type].image;
@@ -386,6 +383,9 @@ class Util {
                 drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[containers[cookObject.name].type].image;
                 cookObject.type = containers[cookObject.name].type;
             }
+            // サイズセット
+            drawing.width = c.wfCookObjectWidth;
+            drawing.height = c.wfCookObjectHeight;
             cookObjects[i].drawing = drawing;
         }
 

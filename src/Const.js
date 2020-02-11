@@ -5,21 +5,37 @@ class Const {
         this.containerImagePath = this.imageParentPath + "/container";
         this.materialImagePath = this.imageParentPath + "/material";
 
-        // ワークフローの描画開始位置(左上の座標)
+
+        // ワークフロー描画関連設定
+        // ワークフロー全体の描画開始位置(左上の座標)
         this.wfPaddingX = 100;
         this.wfPaddingY = 30;
 
-        // ワークフローの描画倍率
-        this.wfMagnificationX = 180;
-        this.wfMagnificationY = 100;
+        // ワークフロー全体の描画倍率
+        this.wfMagnificationX = 190;
+        this.wfMagnificationY = 110;
 
-        // ワークフローの基本Actionのサイズ
+        // 基本アクションのサイズ
         this.wfActionWidth = 100;
         this.wfActionHeight = 50;
 
-        // ワークフローの開始、終了アクションの半径
+        // 開始、終了アクションの半径
         this.wfActionRadius = 10;
 
+        //調理オブジェクトのサイズ
+        this.wfCookObjectWidth = 40;
+        this.wfCookObjectHeight = 40;
+
+        // 調理オブジェクトとアクションオブジェクトの距離
+        this.wfCookObjectActionDistanceX = 80;
+        this.wfCookObjectActionDistanceY = 40;
+
+        // 調理オブジェクトが重なった場合の座標差分倍率
+        this.wfOverlapCookObjectMagnificationX = 10;
+        this.wfOverlapCookObjectMagnificationY = 5;
+
+
+        // 標準のコンテナ
         this.wfContainerTypes = {
             "pot": {
                 title: "鍋",
@@ -31,6 +47,7 @@ class Const {
             },
         }
 
+        // 標準の素材
         this.wfMaterialTypes = {
             "beef": {
                 title: "牛肉",

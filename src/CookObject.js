@@ -14,9 +14,9 @@ class CookObject extends React.Component {
     let drawing = this.props.cookObject.drawing
 
     return <g>
-      <foreignObject x={drawing.posX - 50 / 2} y={drawing.posY - 50 / 2}
-        width={50} height={50} >
-        <img src={process.env.PUBLIC_URL + drawing.image} alt="onion" width={50} />;
+      <foreignObject x ={drawing.posX - drawing.width / 2} y={drawing.posY - drawing.height / 2}
+        width={drawing.width} height={drawing.height} >
+        <img src={process.env.PUBLIC_URL + drawing.image} alt={this.props.cookObject.title} width={drawing.width} />;
       </foreignObject>
     </g>
   }
@@ -28,14 +28,6 @@ class CookObject extends React.Component {
       </g>
     );
   }
-
-  // componentDidMount() {
-  //   // 要素の横幅と縦幅を取得
-  //   let width = this.div.clientWidth;
-  //   let height = this.div.clientHeight;
-  //   // 親から受け継いだ関数を呼び出し、縦幅横幅を親に渡す
-  //   this.props.updateState(width, height);
-  // }
 
 }
 
