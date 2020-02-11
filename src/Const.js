@@ -27,7 +27,7 @@ class Const {
         this.wfCookObjectHeight = 40;
 
         // 調理オブジェクトとアクションオブジェクトの距離
-        this.wfCookObjectActionDistanceX = 70;
+        this.wfCookObjectActionDistanceX = 75;
         this.wfCookObjectActionDistanceY = 40;
 
         // 調理オブジェクトが重なった場合の座標差分倍率

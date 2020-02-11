@@ -375,22 +375,29 @@ class Util {
                 drawing.posY = actions[cookObject.toAction].drawing.posY - c.wfCookObjectActionDistanceY + actionSourceMaterialCount[cookObject.toAction] * c.wfOverlapCookObjectMagnificationY;
                 actionSourceMaterialCount[cookObject.toAction]++;
             }
-            // タイプセット
+
+            // 画像等セット
             if (materials[cookObject.name]) {
-                drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[materials[cookObject.name].type].image;
-                cookObject.type = materials[cookObject.name].type;
+                let material = materials[cookObject.name];
+                cookObject.type = material.type;
+                cookObject.title = material.title;
+                if (cookObject.type !== "custom") {
+                    drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[material.type].image;
+                }
             } else {
-                drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[containers[cookObject.name].type].image;
-                cookObject.type = containers[cookObject.name].type;
+                let container = containers[cookObject.name];
+                cookObject.type = container.type;
+                cookObject.title = container.title;
+                if (cookObject.type !== "custom") {
+                    drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[container.type].image;
+                }
             }
+
             // サイズセット
             drawing.width = c.wfCookObjectWidth;
             drawing.height = c.wfCookObjectHeight;
             cookObjects[i].drawing = drawing;
         }
-
-        //console.log(actionSourceMaterialCount);
-
     }
 
     // 各コンテナの名前をセットする
