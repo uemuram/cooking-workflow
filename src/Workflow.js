@@ -45,7 +45,7 @@ class Workflow extends React.Component {
       components.push(
         <line x1={connector.from.posX} y1={connector.from.posY} 
               x2={connector.to.posX} y2={connector.to.posY}
-              stroke="black" strokeWidth="1" 
+              stroke="black" strokeWidth="2" 
               key={connector.from.actionName + "_" + connector.to.actionName} />
       );
     }
