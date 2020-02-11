@@ -400,6 +400,11 @@ class Util {
         }
     }
 
+    // レシピの調理オブジェクトとアクションをつなぐコネクタをコンパイルする
+    compileRecipeCookObjectsConnector(compiledRecipe){
+
+    }
+
     // 各コンテナの名前をセットする
     setContainerTitle(containers) {
         for (let containerNames in containers) {
@@ -497,6 +502,11 @@ class Util {
             this.compileRecipeActions(compiledRecipe);
             // 素材・コンテナ関連のコンパイル
             this.compileRecipeCookObjects(compiledRecipe);
+            //
+            this.compileRecipeCookObjectsConnector(compiledRecipe);
+
+
+
         } catch (e) {
             console.log(compiledRecipe);
             console.log(e);
