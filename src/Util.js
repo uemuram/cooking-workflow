@@ -376,7 +376,6 @@ class Util {
         }
 
         // 各素材の描画情報を整備する
-
         for (let cookObjectName in cookObjects) {
             let drawing = {};
             let cookObject = cookObjects[cookObjectName];
@@ -443,7 +442,32 @@ class Util {
 
     // レシピの調理オブジェクトとアクションをつなぐコネクタをコンパイルする
     compileRecipeCookObjectsConnector(compiledRecipe) {
+        compiledRecipe.cookObjectConnectors = [];
+        let cookObjectConnector = compiledRecipe.cookObjectConnectors;
+        let cookObjects = compiledRecipe.cookObjects;
+        let actions = compiledRecipe.actions;
 
+        // 調理オブジェクトを走査してコネクタを生成
+        for (let cookObjectName in cookObjects) {
+            let cookObject = cookObjects[cookObjectName];
+
+            // アクションへの入力コネクタ
+            if (cookObject.toAction) {
+                for (let i = 0; i < cookObject.toAction.length; i++) {
+                    let actionName = cookObject.toAction[i];
+                    let action = actions[actionName];
+                    console.log(cookObjectName + " -> " + actionName);
+                }
+            }
+            // アクションからの出力コネクタ
+            if (cookObject.fromAction) {
+                for (let i = 0; i < cookObject.fromAction.length; i++) {
+                    let actionName = cookObject.fromAction[i];
+                    let action = actions[actionName];
+                    console.log(actionName + " -> " + cookObjectName);
+                }
+            }
+        }
     }
 
     // 各コンテナの名前をセットする
