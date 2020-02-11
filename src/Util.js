@@ -309,8 +309,8 @@ class Util {
         }
     }
 
-    // レシピの素材部分をコンパイルする
-    compileRecipeMaterials(compiledRecipe) {
+    // レシピの調理オブジェクト(素材,コンテナをまとめた調理対象オブジェクト)をコンパイルする
+    compileRecipeCookObjects(compiledRecipe) {
         // 要素
         let actions = compiledRecipe.actions;
         let materials = compiledRecipe.materials;
@@ -480,15 +480,16 @@ class Util {
         try {
             // 文法チェック
             this.checkRecipeGrammar(recipe);
+
             // コンテナの名前をセット
-            // 素材の名前をセット
             this.setContainerTitle(compiledRecipe.containers);
             // 素材の名前をセット
             this.setMaterialTitle(compiledRecipe.materials);
+
             // アクション関連のコンパイル
             this.compileRecipeActions(compiledRecipe);
-            // 素材関連のコンパイル
-            this.compileRecipeMaterials(compiledRecipe);
+            // 素材・コンテナ関連のコンパイル
+            this.compileRecipeCookObjects(compiledRecipe);
         } catch (e) {
             console.log(compiledRecipe);
             console.log(e);

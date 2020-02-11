@@ -9,13 +9,6 @@
   height: 900px;
 }
 
-.Material {
-  position: absolute;
-  border: solid #808000;
-  width: 100px;
-  height: 50px;
-}
-
 .Action {
   position: absolute;
   border: solid #408040;

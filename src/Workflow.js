@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/App.css';
 import './css/Workflow.css';
-import Material from './Material';
+import CookObject from './CookObject';
 import Action from './Action';
 import Util from './Util';
 // ユーティリティ
@@ -53,7 +53,7 @@ class Workflow extends React.Component {
   }
 
 
-  renderMaterial() {
+  renderCookObject() {
     let cookObjects = this.props.compiledRecipe.cookObjects;
     let components = [];
 
@@ -61,7 +61,7 @@ class Workflow extends React.Component {
     for (let i=0; i<cookObjects.length; i++){
       let cookObject = cookObjects[i];
       components.push(
-        <Material key={i} cookObject={cookObject}/>
+        <CookObject key={i} cookObject={cookObject}/>
       );
     }
     return components;
@@ -81,7 +81,7 @@ class Workflow extends React.Component {
         <svg className="WorkflowSvg">
           {this.renderAction()}
           {this.renderActionConnector()}
-          {this.renderMaterial()}
+          {this.renderCookObject()}
         </svg>
 
         {util.test3()}
