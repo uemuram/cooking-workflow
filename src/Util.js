@@ -164,8 +164,8 @@ class Util {
         // アクション要素のマップ(どのアクションがどこにあるか)
         compiledRecipe.actionMap = [];
         // コネクタ情報
-        compiledRecipe.connectors = [];
-        let connectors = compiledRecipe.connectors;
+        compiledRecipe.actionConnectors = [];
+        let actionConnectors = compiledRecipe.actionConnectors;
 
         // 全アクション走査、初期設定
         for (let actionName in actions) {
@@ -208,7 +208,7 @@ class Util {
                 }
 
                 // コネクタのfrom,toをセット(座標は後でセット)
-                connectors.push({
+                actionConnectors.push({
                     from: { actionName: dependActionName },
                     to: { actionName: actionName }
                 });
@@ -229,7 +229,7 @@ class Util {
                 actions[actionName].next = ["finish"];
                 actions.finish.depend.push(actionName);
                 // コネクタのfrom,toをセット(座標は後でセット)
-                connectors.push({
+                actionConnectors.push({
                     from: { actionName: actionName },
                     to: { actionName: "finish" }
                 });
@@ -273,10 +273,10 @@ class Util {
         };
 
         // コネクタの座標を計算
-        for (let i = 0; i < connectors.length; i++) {
-            let connector = connectors[i];
-            let fromAction = actions[connector.from.actionName];
-            let toAction = actions[connector.to.actionName];
+        for (let i = 0; i < actionConnectors.length; i++) {
+            let actionConnector = actionConnectors[i];
+            let fromAction = actions[actionConnector.from.actionName];
+            let toAction = actions[actionConnector.to.actionName];
 
             // コネクタがつなぐオブジェクトの中心座標からの距離を計算
             let fromDistanceY = 0;
@@ -302,10 +302,10 @@ class Util {
                 default:
                     break;
             }
-            connector.from.posX = fromAction.drawing.posX;
-            connector.from.posY = fromAction.drawing.posY + fromDistanceY;
-            connector.to.posX = toAction.drawing.posX;
-            connector.to.posY = toAction.drawing.posY - toDistanceY;
+            actionConnector.from.posX = fromAction.drawing.posX;
+            actionConnector.from.posY = fromAction.drawing.posY + fromDistanceY;
+            actionConnector.to.posX = toAction.drawing.posX;
+            actionConnector.to.posY = toAction.drawing.posY - toDistanceY;
         }
     }
 

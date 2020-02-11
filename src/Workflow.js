@@ -37,16 +37,16 @@ class Workflow extends React.Component {
 
   // アクションをつなぐコネクタを描画する
   renderActionConnector(){
-    let connectors = this.props.compiledRecipe.connectors;
+    let actionConnectors = this.props.compiledRecipe.actionConnectors;
     let components = [];
 
-    for(let i=0; i<connectors.length; i++){
-      let connector = connectors[i];
+    for(let i=0; i<actionConnectors.length; i++){
+      let actionConnector = actionConnectors[i];
       components.push(
-        <line x1={connector.from.posX} y1={connector.from.posY} 
-              x2={connector.to.posX} y2={connector.to.posY}
+        <line x1={actionConnector.from.posX} y1={actionConnector.from.posY} 
+              x2={actionConnector.to.posX} y2={actionConnector.to.posY}
               stroke="black" strokeWidth="2" 
-              key={connector.from.actionName + "_" + connector.to.actionName} />
+              key={actionConnector.from.actionName + "_" + actionConnector.to.actionName} />
       );
     }
     return components;
