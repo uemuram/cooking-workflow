@@ -8,12 +8,12 @@ class Const {
 
         // ワークフロー描画関連設定
         // ワークフロー全体の描画開始位置(左上の座標)
-        this.wfPaddingX = 100;
+        this.wfPaddingX = 90;
         this.wfPaddingY = 30;
 
         // ワークフロー全体の描画倍率
         this.wfMagnificationX = 190;
-        this.wfMagnificationY = 110;
+        this.wfMagnificationY = 120;
 
         // 基本アクションのサイズ
         this.wfActionWidth = 100;
@@ -27,7 +27,7 @@ class Const {
         this.wfCookObjectHeight = 40;
 
         // 調理オブジェクトとアクションオブジェクトの距離
-        this.wfCookObjectActionDistanceX = 80;
+        this.wfCookObjectActionDistanceX = 70;
         this.wfCookObjectActionDistanceY = 40;
 
         // 調理オブジェクトが重なった場合の座標差分倍率
