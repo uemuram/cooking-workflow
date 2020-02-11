@@ -58,17 +58,14 @@ class Workflow extends React.Component {
     let components = [];
 
     // 各アクションをコンポーネント化する
-    for (let i=0; i<cookObjects.length; i++){
-      let cookObject = cookObjects[i];
+    for (let cookObjectName in cookObjects) {
+      let cookObject = cookObjects[cookObjectName];
       components.push(
-        <CookObject key={i} cookObject={cookObject}/>
+        <CookObject key={cookObjectName} cookObject={cookObject}/>
       );
     }
+
     return components;
-    // return [
-    //   <Material key={"aaa"} materialObje/>,
-    //   <Material key={"bbb"} />
-    // ]
   }
 
   render() {

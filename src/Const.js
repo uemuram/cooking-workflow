@@ -32,7 +32,7 @@ class Const {
 
         // 調理オブジェクトが重なった場合の座標差分倍率
         this.wfOverlapCookObjectMagnificationX = 10;
-        this.wfOverlapCookObjectMagnificationY = 5;
+        this.wfOverlapCookObjectMagnificationY = 4;
 
 
         // 標準のコンテナ

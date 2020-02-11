@@ -179,6 +179,11 @@ class Util {
             if (actionName === "start") {
                 continue;
             }
+
+            // 手前アクションがない場合は開始アクションに依存させておく
+            if (!action.depend) {
+                action.depend = ["start"];
+            }
             // 次アクションが単一の場合は配列にしておく
             if (!this.isArray(action.depend)) {
                 action.depend = [action.depend];
@@ -195,9 +200,9 @@ class Util {
             // 手前アクションに対してループ
             for (let i = 0; i < action.depend.length; i++) {
                 let dependActionName = action.depend[i];
-                if (!dependActionName) {
-                    dependActionName = "start";
-                }
+                // if (!dependActionName) {
+                //     dependActionName = "start";
+                // }
                 console.log(dependActionName + " -> " + actionName);
                 let dependAction = actions[dependActionName];
 
@@ -213,7 +218,7 @@ class Util {
                     to: { actionName: actionName }
                 });
 
-                // 手前アクションをセット
+                // 次アクションをセット
                 if (!dependAction.next) {
                     dependAction.next = [actionName];
                 } else {
@@ -225,7 +230,6 @@ class Util {
         // 終了アクションの手前アクションを探す
         for (let actionName in actions) {
             if (!actions[actionName].next && actionName !== "finish") {
-                // 開始アクションとのつながり(prev,next)をセット
                 actions[actionName].next = ["finish"];
                 actions.finish.depend.push(actionName);
                 // コネクタのfrom,toをセット(座標は後でセット)
@@ -316,9 +320,8 @@ class Util {
         let materials = compiledRecipe.materials;
         let containers = compiledRecipe.containers;
 
-        // 追加要素の初期化(素材関連)
-        // 素材の実態
-        compiledRecipe.cookObjects = [];
+        // 調理オブジェクト
+        compiledRecipe.cookObjects = {};
         let cookObjects = compiledRecipe.cookObjects;
 
         // アクション名ごとに、紐づいた素材の数をカウントしておく
@@ -337,55 +340,70 @@ class Util {
             // アクションからみてsourceとなっている素材
             if (action.source) {
                 for (let i = 0; i < action.source.length; i++) {
-                    cookObjects.push({
-                        name: action.source[i],
-                        toAction: actionName
-                    })
+                    cookObjects[action.source[i] + "_to_" + actionName] = {
+                        keyName: action.source[i],
+                        toAction: [actionName]
+                    };
                 }
             };
             // アクションから見てtargetとなっている素材
             if (action.target) {
-                cookObjects.push({
-                    name: action.target,
-                    fromAction: actionName
-                })
+                cookObjects[action.target + "_from_" + actionName] = {
+                    keyName: action.target,
+                    fromAction: [actionName]
+                };
             } else if (action.source && action.source.length === 1) {
                 // ターゲットとなる素材がない場合は、ソースをそのままターゲットにする
-                cookObjects.push({
-                    name: action.source[0],
-                    fromAction: actionName
-                })
+                cookObjects[action.source[0] + "_from_" + actionName] = {
+                    keyName: action.source[0],
+                    fromAction: [actionName]
+                };
             };
         }
 
-        // 素材を集約する
-        // TODO
+        // 素材を集約する(同一の調理オブジェクトを1つにまとめる)
+        // 配列の削除が含まれるので後ろからループ
+        for (let cookObjectName in cookObjects) {
+            let cookObject = cookObjects[cookObjectName];
+            // アクションへのインプットになっているもののみを操作対象とする
+            if (!cookObject.toAction) {
+                continue;
+            }
+            // 上位のアクション全てに対してマージ処理
+            for (let j = 0; j < actions[cookObject.toAction[0]].depend.length; j++) {
+                this.margeCookObjects(cookObjects, cookObjectName, cookObject.keyName, actions[cookObject.toAction[0]].depend[j], actions);
+            }
+        }
 
-        // 各素材の描画除法を整備する
-        for (let i = 0; i < cookObjects.length; i++) {
+        // 各素材の描画情報を整備する
+
+        for (let cookObjectName in cookObjects) {
             let drawing = {};
-            let cookObject = cookObjects[i];
+            let cookObject = cookObjects[cookObjectName];
             // 座標計算
             // 素材が重なっている場合はfrom優先
             if (cookObject.fromAction) {
-                drawing.posX = actions[cookObject.fromAction].drawing.posX + c.wfCookObjectActionDistanceX;
-                drawing.posY = actions[cookObject.fromAction].drawing.posY + c.wfCookObjectActionDistanceY;
+                let nearAction = cookObject.fromAction;
+                drawing.posX = actions[nearAction].drawing.posX + c.wfCookObjectActionDistanceX;
+                drawing.posY = actions[nearAction].drawing.posY + c.wfCookObjectActionDistanceY;
             } else {
-                drawing.posX = actions[cookObject.toAction].drawing.posX + c.wfCookObjectActionDistanceX + actionSourceMaterialCount[cookObject.toAction] * c.wfOverlapCookObjectMagnificationX;
-                drawing.posY = actions[cookObject.toAction].drawing.posY - c.wfCookObjectActionDistanceY + actionSourceMaterialCount[cookObject.toAction] * c.wfOverlapCookObjectMagnificationY;
-                actionSourceMaterialCount[cookObject.toAction]++;
+                let nearAction = cookObject.toAction[0];
+                // 1つのアクションに複数調理オブジェクトが入力となる場合は、少し座標をずらす
+                drawing.posX = actions[nearAction].drawing.posX + c.wfCookObjectActionDistanceX + actionSourceMaterialCount[nearAction] * c.wfOverlapCookObjectMagnificationX;
+                drawing.posY = actions[nearAction].drawing.posY - c.wfCookObjectActionDistanceY + actionSourceMaterialCount[nearAction] * c.wfOverlapCookObjectMagnificationY;
+                actionSourceMaterialCount[nearAction]++;
             }
 
             // 画像等セット
-            if (materials[cookObject.name]) {
-                let material = materials[cookObject.name];
+            if (materials[cookObject.keyName]) {
+                let material = materials[cookObject.keyName];
                 cookObject.type = material.type;
                 cookObject.title = material.title;
                 if (cookObject.type !== "custom") {
                     drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[material.type].image;
                 }
             } else {
-                let container = containers[cookObject.name];
+                let container = containers[cookObject.keyName];
                 cookObject.type = container.type;
                 cookObject.title = container.title;
                 if (cookObject.type !== "custom") {
@@ -396,12 +414,35 @@ class Util {
             // サイズセット
             drawing.width = c.wfCookObjectWidth;
             drawing.height = c.wfCookObjectHeight;
-            cookObjects[i].drawing = drawing;
+            cookObject.drawing = drawing;
+        }
+    }
+
+    // 入出力で重複している調理オブジェクトを1つにまとめる
+    margeCookObjects(cookObjects, cookObjectName, keyName, actionName, actions) {
+        // 最初なら何もしない
+        if (actionName === "start") {
+            return;
+        }
+        // 対象アクションへの入力となる同一調理オブジェクトがあるかチェック
+        if (cookObjects[keyName + "_from_" + actionName]) {
+            // マージする
+            if (!cookObjects[keyName + "_from_" + actionName].toAction) {
+                cookObjects[keyName + "_from_" + actionName].toAction = [cookObjects[cookObjectName].toAction[0]];
+            } else {
+                cookObjects[keyName + "_from_" + actionName].push(cookObjects[cookObjectName].toAction[0]);
+            }
+            delete cookObjects[cookObjectName];
+            return;
+        }
+        // 指定されたアクションより上を全て走査する。
+        for (let i = 0; i < actions[actionName].depend.length; i++) {
+            this.margeCookObjects(cookObjects, cookObjectName, keyName, actions[actionName].depend[i], actions);
         }
     }
 
     // レシピの調理オブジェクトとアクションをつなぐコネクタをコンパイルする
-    compileRecipeCookObjectsConnector(compiledRecipe){
+    compileRecipeCookObjectsConnector(compiledRecipe) {
 
     }
 
