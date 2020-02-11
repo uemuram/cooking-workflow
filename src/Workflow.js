@@ -54,14 +54,14 @@ class Workflow extends React.Component {
 
 
   renderMaterial() {
-    let materialObjects = this.props.compiledRecipe.materialObjects;
+    let cookObjects = this.props.compiledRecipe.cookObjects;
     let components = [];
 
     // 各アクションをコンポーネント化する
-    for (let i=0; i<materialObjects.length; i++){
-      let materialObject = materialObjects[i];
+    for (let i=0; i<cookObjects.length; i++){
+      let cookObject = cookObjects[i];
       components.push(
-        <Material key={i} materialObject={materialObject}/>
+        <Material key={i} cookObject={cookObject}/>
       );
     }
     return components;

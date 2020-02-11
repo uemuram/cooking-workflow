@@ -318,8 +318,8 @@ class Util {
 
         // 追加要素の初期化(素材関連)
         // 素材の実態
-        compiledRecipe.materialObjects = [];
-        let materialObjects = compiledRecipe.materialObjects;
+        compiledRecipe.cookObjects = [];
+        let cookObjects = compiledRecipe.cookObjects;
 
         // アクション名ごとに、紐づいた素材の数をカウントしておく
         let actionSourceMaterialCount = {};
@@ -337,7 +337,7 @@ class Util {
             // アクションからみてsourceとなっている素材
             if (action.source) {
                 for (let i = 0; i < action.source.length; i++) {
-                    materialObjects.push({
+                    cookObjects.push({
                         name: action.source[i],
                         toAction: actionName
                     })
@@ -345,13 +345,13 @@ class Util {
             };
             // アクションから見てtargetとなっている素材
             if (action.target) {
-                materialObjects.push({
+                cookObjects.push({
                     name: action.target,
                     fromAction: actionName
                 })
             } else if (action.source && action.source.length === 1) {
                 // ターゲットとなる素材がない場合は、ソースをそのままターゲットにする
-                materialObjects.push({
+                cookObjects.push({
                     name: action.source[0],
                     fromAction: actionName
                 })
@@ -361,30 +361,32 @@ class Util {
         // 素材を集約する
         // TODO
 
-        console.log(materialObjects);
+        console.log(cookObjects);
         // 各素材の描画除法を整備する
-        for (let i = 0; i < materialObjects.length; i++) {
+        for (let i = 0; i < cookObjects.length; i++) {
             let drawing = {};
-            let materialObject = materialObjects[i];
+            let cookObject = cookObjects[i];
 
             // 座標計算
             // 素材が重なっている場合はfrom優先
-            if (materialObject.fromAction) {
-                drawing.posX = actions[materialObject.fromAction].drawing.posX + 30;
-                drawing.posY = actions[materialObject.fromAction].drawing.posY + 40;
+            if (cookObject.fromAction) {
+                drawing.posX = actions[cookObject.fromAction].drawing.posX + 30;
+                drawing.posY = actions[cookObject.fromAction].drawing.posY + 40;
             } else {
-                drawing.posX = actions[materialObject.toAction].drawing.posX + 30 + actionSourceMaterialCount[materialObject.toAction] * 10;
-                drawing.posY = actions[materialObject.toAction].drawing.posY - 50;
-                actionSourceMaterialCount[materialObject.toAction]++;
+                drawing.posX = actions[cookObject.toAction].drawing.posX + 30 + actionSourceMaterialCount[cookObject.toAction] * 10;
+                drawing.posY = actions[cookObject.toAction].drawing.posY - 50;
+                actionSourceMaterialCount[cookObject.toAction]++;
             }
 
             // タイプセット
-            if (materials[materialObject.name]) {
-                drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[materials[materialObject.name].type].image;
+            if (materials[cookObject.name]) {
+                drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[materials[cookObject.name].type].image;
+                cookObject.type = materials[cookObject.name].type;
             } else {
-                drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[containers[materialObject.name].type].image;
+                drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[containers[cookObject.name].type].image;
+                cookObject.type = containers[cookObject.name].type;
             }
-            materialObjects[i].drawing = drawing;
+            cookObjects[i].drawing = drawing;
         }
 
         //console.log(actionSourceMaterialCount);

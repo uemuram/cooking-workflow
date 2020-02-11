@@ -11,7 +11,7 @@ class Material extends React.Component {
 
   // 描画
   drawAction() {
-    let drawing = this.props.materialObject.drawing
+    let drawing = this.props.cookObject.drawing
 
     return <g>
       <foreignObject x={drawing.posX - 50 / 2} y={drawing.posY - 50 / 2}

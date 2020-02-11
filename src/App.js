@@ -12,7 +12,7 @@ class App extends React.Component {
       value: "",
       message: "",
       recipe: { containers: {}, materials: {}, actions: {} },
-      compiledRecipe: { containers: {}, materials: {}, actions: {}, connectors: [], materialObjects: {} }
+      compiledRecipe: { containers: {}, materials: {}, actions: {}, connectors: [], cookObjects: {} }
     }
 
     this.handleChange = this.handleChange.bind(this);
