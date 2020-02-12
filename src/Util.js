@@ -443,28 +443,47 @@ class Util {
     // レシピの調理オブジェクトとアクションをつなぐコネクタをコンパイルする
     compileRecipeCookObjectsConnector(compiledRecipe) {
         compiledRecipe.cookObjectConnectors = [];
-        let cookObjectConnector = compiledRecipe.cookObjectConnectors;
+        let cookObjectConnectors = compiledRecipe.cookObjectConnectors;
         let cookObjects = compiledRecipe.cookObjects;
         let actions = compiledRecipe.actions;
 
         // 調理オブジェクトを走査してコネクタを生成
         for (let cookObjectName in cookObjects) {
             let cookObject = cookObjects[cookObjectName];
-
             // アクションへの入力コネクタ
             if (cookObject.toAction) {
                 for (let i = 0; i < cookObject.toAction.length; i++) {
                     let actionName = cookObject.toAction[i];
-                    let action = actions[actionName];
                     console.log(cookObjectName + " -> " + actionName);
+                    let action = actions[actionName];
+                    let cookObjectConnector = {
+                        type: "in",
+                        from: {
+                            cookObjectName: cookObjectName
+                        },
+                        to: {
+                            actionName: actionName
+                        }
+                    };
+                    cookObjectConnectors.push(cookObjectConnector);
                 }
             }
             // アクションからの出力コネクタ
             if (cookObject.fromAction) {
                 for (let i = 0; i < cookObject.fromAction.length; i++) {
                     let actionName = cookObject.fromAction[i];
-                    let action = actions[actionName];
                     console.log(actionName + " -> " + cookObjectName);
+                    let action = actions[actionName];
+                    let cookObjectConnector = {
+                        type: "out",
+                        from: {
+                            actionName: actionName
+                        },
+                        to: {
+                            cookObjectName: cookObjectName
+                        }
+                    };
+                    cookObjectConnectors.push(cookObjectConnector);
                 }
             }
         }
