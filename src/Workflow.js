@@ -29,24 +29,53 @@ class Workflow extends React.Component {
     for (let currentActionName in actions) {
       let currentAction = actions[currentActionName];
       components.push(
-        <Action key={currentActionName} action={currentAction}/>
+        <Action key={currentActionName} action={currentAction} />
       );
     }
     return components;
   }
 
   // アクションをつなぐコネクタを描画する
-  renderActionConnector(){
+  renderActionConnector() {
+    let actions = this.props.compiledRecipe.actions;
     let actionConnectors = this.props.compiledRecipe.actionConnectors;
     let components = [];
 
-    for(let i=0; i<actionConnectors.length; i++){
+    for (let i = 0; i < actionConnectors.length; i++) {
       let actionConnector = actionConnectors[i];
+      let fromAction = actions[actionConnector.from.actionName];
+      let toAction = actions[actionConnector.to.actionName];
+
+      // コネクタがつなぐオブジェクトの中心座標からの距離を計算
+      let fromDistanceY = 0;
+      let toDistanceY = 0;
+      switch (fromAction.drawing.form) {
+        case "circle":
+          fromDistanceY = fromAction.drawing.radius;
+          break;
+        case "square":
+          fromDistanceY = fromAction.drawing.height / 2;
+          break;
+        default:
+          break;
+      }
+      switch (toAction.drawing.form) {
+        case "circle":
+          toDistanceY = toAction.drawing.radius;
+          break;
+        case "square":
+          toDistanceY = toAction.drawing.height / 2;
+          break;
+        default:
+          break;
+      }
+
+      // コネクタを描画
       components.push(
-        <line x1={actionConnector.from.posX} y1={actionConnector.from.posY} 
-              x2={actionConnector.to.posX} y2={actionConnector.to.posY}
-              stroke="black" strokeWidth="2" 
-              key={actionConnector.from.actionName + "_" + actionConnector.to.actionName} />
+        <line x1={fromAction.drawing.posX} y1={fromAction.drawing.posY + fromDistanceY}
+          x2={toAction.drawing.posX} y2={toAction.drawing.posY - toDistanceY}
+          stroke="black" strokeWidth="2"
+          key={actionConnector.from.actionName + "_" + actionConnector.to.actionName} />
       );
     }
     return components;
@@ -61,7 +90,7 @@ class Workflow extends React.Component {
     for (let cookObjectName in cookObjects) {
       let cookObject = cookObjects[cookObjectName];
       components.push(
-        <CookObject key={cookObjectName} cookObject={cookObject}/>
+        <CookObject key={cookObjectName} cookObject={cookObject} />
       );
     }
 

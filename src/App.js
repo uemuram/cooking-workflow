@@ -63,6 +63,7 @@ class App extends React.Component {
     let newCompiledRecipe = Object.assign({}, this.state.compiledRecipe);
     newCompiledRecipe.title = "aaa";
     newCompiledRecipe.actions.addOnionToPot.drawing.width += 10;
+    newCompiledRecipe.actions.addOnionToPot.drawing.height += 8;
     this.setState({ compiledRecipe: newCompiledRecipe });
   }
 

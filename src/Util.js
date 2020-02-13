@@ -275,42 +275,6 @@ class Util {
             }
             action.drawing = drawing;
         };
-
-        // コネクタの座標を計算
-        for (let i = 0; i < actionConnectors.length; i++) {
-            let actionConnector = actionConnectors[i];
-            let fromAction = actions[actionConnector.from.actionName];
-            let toAction = actions[actionConnector.to.actionName];
-
-            // コネクタがつなぐオブジェクトの中心座標からの距離を計算
-            let fromDistanceY = 0;
-            let toDistanceY = 0;
-            switch (fromAction.drawing.form) {
-                case "circle":
-                    fromDistanceY = fromAction.drawing.radius;
-                    break;
-                case "square":
-                    fromDistanceY = fromAction.drawing.height / 2;
-                    break;
-                default:
-                    break;
-            }
-
-            switch (toAction.drawing.form) {
-                case "circle":
-                    toDistanceY = toAction.drawing.radius;
-                    break;
-                case "square":
-                    toDistanceY = toAction.drawing.height / 2;
-                    break;
-                default:
-                    break;
-            }
-            actionConnector.from.posX = fromAction.drawing.posX;
-            actionConnector.from.posY = fromAction.drawing.posY + fromDistanceY;
-            actionConnector.to.posX = toAction.drawing.posX;
-            actionConnector.to.posY = toAction.drawing.posY - toDistanceY;
-        }
     }
 
     // レシピの調理オブジェクト(素材,コンテナをまとめた調理対象オブジェクト)をコンパイルする

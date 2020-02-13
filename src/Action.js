@@ -10,7 +10,8 @@ class Action extends React.Component {
 
   // 描画
   drawAction() {
-    let drawing = this.props.action.drawing
+    let drawing = this.props.action.drawing;
+
     if (drawing.form === "circle") {
       // 円の場合
       return <g>
