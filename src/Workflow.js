@@ -132,18 +132,11 @@ class Workflow extends React.Component {
         cpX = fromX;
         cpY = toY;
       }
-
-      // components.push(
-      //   <line x1={fromX} y1={fromY} x2={toX} y2={toY}
-      //     stroke="red" strokeWidth="0.5"
-      //     key={i} />
-      // );
-
+      // ベジェ曲線描画
       let pathStr = ["M", fromX, fromY, "S", cpX, cpY, toX, toY].join(" ");
       components.push(
-        <path d={pathStr} stroke="orangered" fill="transparent" stroke-width="0.5" key={i} />
+        <path d={pathStr} stroke="orangered" fill="transparent" strokeWidth="0.5" key={i} />
       );
-      //http://www.tohoho-web.com/ex/svg.html
     }
 
     return components;
