@@ -97,6 +97,44 @@ class Workflow extends React.Component {
     return components;
   }
 
+  renderCookObjectConnector() {
+    let actions = this.props.compiledRecipe.actions;
+    let cookObjects = this.props.compiledRecipe.cookObjects;
+    let cookObjectConnectors = this.props.compiledRecipe.cookObjectConnectors;
+    let components = [];
+
+    for (let i = 0; i < cookObjectConnectors.length; i++) {
+      let cookObjectConnector = cookObjectConnectors[i];
+      let fromX, fromY, toX, toY;
+
+      if (cookObjectConnector.type === "in") {
+        // 調理オブジェクト -> アクション のコネクタ
+        let from = cookObjects[cookObjectConnector.from.cookObjectName];
+        let to = actions[cookObjectConnector.to.actionName];
+        fromX = from.drawing.posX;
+        fromY = from.drawing.posY + from.drawing.height / 2;
+        toX = to.drawing.posX + to.drawing.width / 2;
+        toY = to.drawing.posY - 10;
+      } else {
+        // アクション -> 調理オブジェクト のコネクタ
+        let from = actions[cookObjectConnector.from.actionName];
+        let to = cookObjects[cookObjectConnector.to.cookObjectName];
+        fromX = from.drawing.posX + 30;
+        fromY = from.drawing.posY + from.drawing.height / 2;
+        toX = to.drawing.posX - to.drawing.width / 2;
+        toY = to.drawing.posY;
+      }
+
+      components.push(
+        <line x1={fromX} y1={fromY} x2={toX} y2={toY}
+          stroke="red" strokeWidth="0.5"
+          key={i} />
+      );
+    }
+
+    return components;
+  }
+
   render() {
     return (
       <div className="Workflow">
@@ -108,6 +146,7 @@ class Workflow extends React.Component {
           {this.renderAction()}
           {this.renderActionConnector()}
           {this.renderCookObject()}
+          {this.renderCookObjectConnector()}
         </svg>
 
         {util.test3()}
