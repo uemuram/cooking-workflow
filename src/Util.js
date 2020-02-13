@@ -132,6 +132,9 @@ class Util {
             case "cookRice":
                 title = material[action.source].title + "を炊く";
                 break;
+            case "peel":
+                title = material[action.source].title + "の皮をむく";
+                break;
             case "cut":
                 title = material[action.source].title + "を切る";
                 break;
