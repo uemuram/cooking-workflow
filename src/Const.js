@@ -28,7 +28,7 @@ class Const {
 
         // 調理オブジェクトとアクションオブジェクトの距離
         this.wfCookObjectActionDistanceX = 75;
-        this.wfCookObjectActionDistanceY = 40;
+        this.wfCookObjectActionDistanceY = 45;
 
         // 調理オブジェクトが重なった場合の座標差分倍率
         this.wfOverlapCookObjectMagnificationX = 10;

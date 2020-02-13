@@ -412,7 +412,6 @@ class Util {
         compiledRecipe.cookObjectConnectors = [];
         let cookObjectConnectors = compiledRecipe.cookObjectConnectors;
         let cookObjects = compiledRecipe.cookObjects;
-        let actions = compiledRecipe.actions;
 
         // 調理オブジェクトを走査してコネクタを生成
         for (let cookObjectName in cookObjects) {
@@ -422,7 +421,6 @@ class Util {
                 for (let i = 0; i < cookObject.toAction.length; i++) {
                     let actionName = cookObject.toAction[i];
                     console.log(cookObjectName + " -> " + actionName);
-                    let action = actions[actionName];
                     let cookObjectConnector = {
                         type: "in",
                         from: {
@@ -440,7 +438,6 @@ class Util {
                 for (let i = 0; i < cookObject.fromAction.length; i++) {
                     let actionName = cookObject.fromAction[i];
                     console.log(actionName + " -> " + cookObjectName);
-                    let action = actions[actionName];
                     let cookObjectConnector = {
                         type: "out",
                         from: {

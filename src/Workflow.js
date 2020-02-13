@@ -105,31 +105,45 @@ class Workflow extends React.Component {
 
     for (let i = 0; i < cookObjectConnectors.length; i++) {
       let cookObjectConnector = cookObjectConnectors[i];
-      let fromX, fromY, toX, toY;
+      let fromX, fromY, toX, toY, cpX, cpY;
 
       if (cookObjectConnector.type === "in") {
         // 調理オブジェクト -> アクション のコネクタ
         let from = cookObjects[cookObjectConnector.from.cookObjectName];
         let to = actions[cookObjectConnector.to.actionName];
+        // 始点、終点
         fromX = from.drawing.posX;
         fromY = from.drawing.posY + from.drawing.height / 2;
         toX = to.drawing.posX + to.drawing.width / 2;
         toY = to.drawing.posY - 10;
+        // 制御点(ベジェ曲線用)
+        cpX = fromX;
+        cpY = toY;
       } else {
         // アクション -> 調理オブジェクト のコネクタ
         let from = actions[cookObjectConnector.from.actionName];
         let to = cookObjects[cookObjectConnector.to.cookObjectName];
+        // 始点、終点
         fromX = from.drawing.posX + 30;
         fromY = from.drawing.posY + from.drawing.height / 2;
         toX = to.drawing.posX - to.drawing.width / 2;
         toY = to.drawing.posY;
+        // 制御点(ベジェ曲線用)
+        cpX = fromX;
+        cpY = toY;
       }
 
+      // components.push(
+      //   <line x1={fromX} y1={fromY} x2={toX} y2={toY}
+      //     stroke="red" strokeWidth="0.5"
+      //     key={i} />
+      // );
+
+      let pathStr = ["M", fromX, fromY, "S", cpX, cpY, toX, toY].join(" ");
       components.push(
-        <line x1={fromX} y1={fromY} x2={toX} y2={toY}
-          stroke="red" strokeWidth="0.5"
-          key={i} />
+        <path d={pathStr} stroke="orangered" fill="transparent" stroke-width="0.5" key={i} />
       );
+      //http://www.tohoho-web.com/ex/svg.html
     }
 
     return components;
