@@ -106,7 +106,7 @@ class Workflow extends React.Component {
     for (let i = 0; i < cookObjectConnectors.length; i++) {
       let cookObjectConnector = cookObjectConnectors[i];
       let fromX, fromY, toX, toY, cpX, cpY;
-
+      let color, direction;
       if (cookObjectConnector.type === "in") {
         // 調理オブジェクト -> アクション のコネクタ
         let from = cookObjects[cookObjectConnector.from.cookObjectName];
@@ -115,28 +115,39 @@ class Workflow extends React.Component {
         fromX = from.drawing.posX;
         fromY = from.drawing.posY + from.drawing.height / 2;
         toX = to.drawing.posX + to.drawing.width / 2;
-        toY = to.drawing.posY - 10;
+        toY = to.drawing.posY - to.drawing.height / 2 + 10;
         // 制御点(ベジェ曲線用)
         cpX = fromX;
         cpY = toY;
+        color = "orangered";
+        direction = 1;
       } else {
         // アクション -> 調理オブジェクト のコネクタ
         let from = actions[cookObjectConnector.from.actionName];
         let to = cookObjects[cookObjectConnector.to.cookObjectName];
         // 始点、終点
-        fromX = from.drawing.posX + 30;
+        fromX = from.drawing.posX + from.drawing.width / 2 - 10;
         fromY = from.drawing.posY + from.drawing.height / 2;
         toX = to.drawing.posX - to.drawing.width / 2;
         toY = to.drawing.posY;
         // 制御点(ベジェ曲線用)
         cpX = fromX;
         cpY = toY;
+        color = "blue";
+        direction = -1;
       }
       // ベジェ曲線描画
       let pathStr = ["M", fromX, fromY, "S", cpX, cpY, toX, toY].join(" ");
       components.push(
-        <path d={pathStr} stroke="orangered" fill="transparent" strokeWidth="0.5" key={i} />
+        <path d={pathStr} stroke={color} fill="transparent" strokeWidth="0.5" key={i} />
       );
+      // 矢印の先端を描画
+      let arrowHead = ["M", toX, toY, "L", toX + 5 * direction, toY - 3, "L", toX + 5 * direction, toY + 3, "Z"].join(" ");
+      components.push(
+        <path d={arrowHead} stroke={color} fill={color} strokeWidth="0.5" key={i + "_head"} />
+      );
+
+
     }
 
     return components;
