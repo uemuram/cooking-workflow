@@ -109,7 +109,7 @@ class Workflow extends React.Component {
     for (let i = 0; i < cookObjectConnectors.length; i++) {
       let cookObjectConnector = cookObjectConnectors[i];
       let fromX, fromY, toX, toY, cpX, cpY, arrowHead;
-      let color, direction;
+      let color;
       if (cookObjectConnector.type === "in") {
         // 調理オブジェクト -> アクション のコネクタ
         let from = cookObjects[cookObjectConnector.from.cookObjectName];
