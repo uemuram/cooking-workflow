@@ -3,7 +3,10 @@ import './css/App.css';
 import './css/Workflow.css';
 import CookObject from './CookObject';
 import Action from './Action';
+import Const from './Const';
 import Util from './Util';
+// 定数定義
+const c = new Const();
 // ユーティリティ
 const util = new Util();
 
@@ -105,7 +108,7 @@ class Workflow extends React.Component {
 
     for (let i = 0; i < cookObjectConnectors.length; i++) {
       let cookObjectConnector = cookObjectConnectors[i];
-      let fromX, fromY, toX, toY, cpX, cpY;
+      let fromX, fromY, toX, toY, cpX, cpY, arrowHead;
       let color, direction;
       if (cookObjectConnector.type === "in") {
         // 調理オブジェクト -> アクション のコネクタ
@@ -120,7 +123,9 @@ class Workflow extends React.Component {
         cpX = fromX;
         cpY = toY;
         color = "orangered";
-        direction = 1;
+        arrowHead = ["M", toX, toY,
+          "L", toX + c.wfCookObjectConnectorHeadInX1, toY - c.wfCookObjectConnectorHeadInY1,
+          "L", toX + c.wfCookObjectConnectorHeadInX2, toY - c.wfCookObjectConnectorHeadInY2, "Z"].join(" ");
       } else {
         // アクション -> 調理オブジェクト のコネクタ
         let from = actions[cookObjectConnector.from.actionName];
@@ -134,7 +139,9 @@ class Workflow extends React.Component {
         cpX = fromX;
         cpY = toY;
         color = "blue";
-        direction = -1;
+        arrowHead = ["M", toX, toY,
+          "L", toX + c.wfCookObjectConnectorHeadOutX1, toY - c.wfCookObjectConnectorHeadOutY1,
+          "L", toX + c.wfCookObjectConnectorHeadOutX2, toY - c.wfCookObjectConnectorHeadOutY2, "Z"].join(" ");
       }
       // ベジェ曲線描画
       let pathStr = ["M", fromX, fromY, "S", cpX, cpY, toX, toY].join(" ");
@@ -142,12 +149,9 @@ class Workflow extends React.Component {
         <path d={pathStr} stroke={color} fill="transparent" strokeWidth="0.5" key={i} />
       );
       // 矢印の先端を描画
-      let arrowHead = ["M", toX, toY, "L", toX + 5 * direction, toY - 3, "L", toX + 5 * direction, toY + 3, "Z"].join(" ");
       components.push(
         <path d={arrowHead} stroke={color} fill={color} strokeWidth="0.5" key={i + "_head"} />
       );
-
-
     }
 
     return components;
