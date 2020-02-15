@@ -16,7 +16,7 @@ class Action extends React.Component {
       // 円の場合
       return <g>
         <circle cx={drawing.posX} cy={drawing.posY} r={drawing.radius}
-          stroke="blue" fill="white" strokeWidth="2" />
+          stroke="#9999FF" fill="white" strokeWidth="2" />
       </g>
     } else if (drawing.form === "square") {
       // 矩形の場合

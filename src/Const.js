@@ -13,7 +13,7 @@ class Const {
 
         // ワークフロー全体の描画倍率
         this.wfMagnificationX = 190;
-        this.wfMagnificationY = 120;
+        this.wfMagnificationY = 125;
 
         // 基本アクションのサイズ
         this.wfActionWidth = 100;

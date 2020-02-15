@@ -527,10 +527,54 @@ class Util {
                 }
             }
         }
+    }
 
+    // アクションがループしていないかチェック
+    checkRecipeActrionLoop(compiledRecipe) {
+        let actions = compiledRecipe.actions;
+        // 開始、終了アクションが見つけられない場合
+        if (actions.start.next.length === 0) {
+            throw this.getSyntaxErrorObj("actions", "アクションの開始地点が見つかりません。依存関係がループしている可能性があります。");
+        }
+        if (actions.finish.depend.length === 0) {
+            throw this.getSyntaxErrorObj("actions", "アクションの終了地点が見つかりません。依存関係がループしている可能性があります。");
+        }
+        let actionNameList = Object.keys(actions);
+        // ループチェック
+        this.loopCheck("start", actions, [], actionNameList)
+        // startから全経路探索して、一度も通らなかったルートがあった場合、ループがある可能性あり
+        if (actionNameList.length > 0) {
+            throw this.getSyntaxErrorObj("actions", "成立しない経路があります。依存関係がループしている可能性があります。("
+                + actionNameList.join(",") + ")"
+            );
+        }
+    }
 
-
-
+    // アクションのループチェックの実体
+    loopCheck(actionName, actions, actionHistory, actionNameList) {
+        // 一度通過したアクションをリストから消していく
+        let index = actionNameList.indexOf(actionName);
+        if (index >= 0) {
+            actionNameList.splice(index, 1);
+        }
+        // 終了条件
+        if (actionName === "finish") {
+            return;
+        }
+        //現アクションが履歴の中にあれば、アクションが再登場としたと判断してエラー
+        if (actionHistory.indexOf(actionName) >= 0) {
+            throw this.getSyntaxErrorObj("actions", "アクションの依存関係がループしています。("
+                + actionHistory.join("->") + "->" + actionName + ")");
+        }
+        // アクションの履歴をディープコピーし、現アクションを追加
+        const nextActionHistory = actionHistory.concat();
+        nextActionHistory.push(actionName);
+        // 次アクションを順次呼び出す
+        let action = actions[actionName];
+        for (let i = 0; i < action.next.length; i++) {
+            let nextActionName = action.next[i];
+            this.loopCheck(nextActionName, actions, nextActionHistory, actionNameList);
+        }
     }
 
     // レシピをコンパイルする
@@ -545,16 +589,16 @@ class Util {
             this.setContainerTitle(compiledRecipe.containers);
             // 素材の名前をセット
             this.setMaterialTitle(compiledRecipe.materials);
-
             // アクション関連のコンパイル
             this.compileRecipeActions(compiledRecipe);
+
+            // ループチェック
+            this.checkRecipeActrionLoop(compiledRecipe)
+
             // 素材・コンテナ関連のコンパイル
             this.compileRecipeCookObjects(compiledRecipe);
-            //
+            // 調理オブジェクトのコネクタのコンパイル
             this.compileRecipeCookObjectsConnector(compiledRecipe);
-
-
-
         } catch (e) {
             console.log(compiledRecipe);
             console.log(e);
