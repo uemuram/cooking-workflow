@@ -215,6 +215,11 @@ class Util {
                 action.source = [action.source];
             }
 
+            // 説明がない場合は空文字を入れておく
+            if (!action.description) {
+                action.description = "";
+            }
+
             // 各アクションのタイトルをセットする
             this.setActionTitle(materials, containers, action);
 
@@ -357,6 +362,29 @@ class Util {
             // 上位のアクション全てに対してマージ処理
             for (let j = 0; j < actions[cookObject.toAction[0]].depend.length; j++) {
                 this.margeCookObjects(cookObjects, cookObjectName, cookObject.keyName, actions[cookObject.toAction[0]].depend[j], actions);
+            }
+        }
+
+        // 集約した調理オブジェクトの情報を、アクション側にも記録しておく
+        for (let cookObjectName in cookObjects) {
+            let cookObject = cookObjects[cookObjectName];
+            if (cookObject.toAction) {
+                for (let i = 0; i < cookObject.toAction.length; i++) {
+                    let action = actions[cookObject.toAction[i]];
+                    if (!action.sourceCookObject) {
+                        action.sourceCookObject = [];
+                    }
+                    action.sourceCookObject.push(cookObjectName);
+                }
+            }
+            if (cookObject.fromAction) {
+                for (let i = 0; i < cookObject.fromAction.length; i++) {
+                    let action = actions[cookObject.fromAction[i]];
+                    if (!action.targetCookObject) {
+                        action.targetCookObject = [];
+                    }
+                    action.targetCookObject.push(cookObjectName);
+                }
             }
         }
 

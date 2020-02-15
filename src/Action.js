@@ -16,19 +16,21 @@ class Action extends React.Component {
       // 円の場合
       return <g>
         <circle cx={drawing.posX} cy={drawing.posY} r={drawing.radius}
-          stroke="#9999FF" fill="white" strokeWidth="2" />
+          stroke="#9999FF" fill="white" strokeWidth="2"
+        />
       </g>
     } else if (drawing.form === "square") {
       // 矩形の場合
-      return <g>
+      return <g onClick={this.props.dispActionDetail} data-actionname={this.props.actionName}>
         <rect x={drawing.posX - drawing.width / 2} y={drawing.posY - drawing.height / 2}
           width={drawing.width} height={drawing.height}
           stroke="green" fill="white"
-          strokeWidth="2" />
+          strokeWidth="2"
+        />
 
         <foreignObject x={drawing.posX - drawing.width / 2} y={drawing.posY - drawing.height / 2}
           width={drawing.width} height={drawing.height} >
-          <div className="ActionText">{this.props.action.title}</div>
+          <div className="ActionText" >{this.props.action.title}</div>
         </foreignObject>
       </g>
     }

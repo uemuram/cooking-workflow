@@ -11,6 +11,7 @@ class App extends React.Component {
     this.state = {
       value: "",
       message: "",
+      recipeDetail: "",
       recipe: { containers: {}, materials: {}, actions: {} },
       compiledRecipe: {
         containers: {}, materials: {}, actions: {},
@@ -29,8 +30,7 @@ class App extends React.Component {
   }
 
   buttonOnClick() {
-    console.log("buttonOnClick!");
-
+    console.log("buttonOnClick");
     // JSON形式として正しいかのみチェック
     let newRecipe;
     try {
@@ -52,13 +52,13 @@ class App extends React.Component {
     // コンパイル成功した場合はデータ更新
     console.log(JSON.stringify(newCompiledRecipe, null, 2));
     this.setState({ message: "" });
+    this.setState({ recipeDetail: "" });
     this.setState({ recipe: newRecipe });
     this.setState({ compiledRecipe: newCompiledRecipe });
   }
 
   // テスト用
   buttonOnClick2() {
-    console.log("buttonOnClick2!");
     // 要素加工のテスト
     let newCompiledRecipe = Object.assign({}, this.state.compiledRecipe);
     newCompiledRecipe.title = "aaa";
@@ -71,6 +71,18 @@ class App extends React.Component {
     this.setState({ value: event.target.value });
   }
 
+  // アクションの詳細を表示する
+  dispActionDetail(e) {
+    let actionName = e.currentTarget.getAttribute('data-actionname');
+    let action = this.state.compiledRecipe.actions[actionName];
+    let detailStr = "";
+    detailStr += ("<" + action.title + ">\n");
+    detailStr += (action.description + "\n\n");
+    detailStr += ("入力 : " + action.sourceCookObject.map(name => this.state.compiledRecipe.cookObjects[name].title).join(",") + "\n");
+    detailStr += ("出力 : " + action.targetCookObject.map(name => this.state.compiledRecipe.cookObjects[name].title).join(",") + "\n");
+    this.setState({ recipeDetail: detailStr });
+  }
+
   render() {
     return (
       <div>
@@ -78,12 +90,14 @@ class App extends React.Component {
           <form>
             <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
             <br />
-            <button type="button" onClick={() => this.buttonOnClick()}>何らかのボタン</button>
-            <button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>
+            <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
+            {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
             <br /><br />
             <textarea readOnly value={this.state.message} className="MessageTextArea" />
+            <br />
+            <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
           </form>
-          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} />
+          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} dispActionDetail={this.dispActionDetail.bind(this)} />
         </div >
       </div>
     )

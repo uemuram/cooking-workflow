@@ -32,7 +32,7 @@ class Workflow extends React.Component {
     for (let currentActionName in actions) {
       let currentAction = actions[currentActionName];
       components.push(
-        <Action key={currentActionName} action={currentAction} />
+        <Action key={currentActionName} action={currentAction} actionName={currentActionName} dispActionDetail={this.props.dispActionDetail}/>
       );
     }
     return components;
@@ -163,8 +163,8 @@ class Workflow extends React.Component {
         {this.props.compiledRecipe.title}
         <br />
         {this.props.compiledRecipe.description}
-
-        <svg className="WorkflowSvg">
+        <br />
+        <svg className="WorkflowSvg" viewBox="0, 0, 800, 1000">
           {this.renderAction()}
           {this.renderActionConnector()}
           {this.renderCookObject()}

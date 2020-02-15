@@ -10,9 +10,16 @@
 
 .MessageTextArea {
   width: 300px;
-  height: 100px;
+  height: 80px;
   font-size: small;
   color: #ff0000;
+}
+
+.RecipeDetailTextArea {
+  width: 300px;
+  height: 200px;
+  font-size: small;
+  color : "black"
 }
 
 .Flex {
