@@ -111,6 +111,163 @@ class Const {
             }
         }
 
+        // 標準のアクション
+        this.wfActionTypes = {
+            "custom": {
+                content: "カスタム",
+                rules: {
+                    source: {
+                        upperLimit: null,
+                        lowerLimit: null,
+                        allowMaterial: true,
+                        allowContainer: true
+                    },
+                    target: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: true,
+                        allowContainer: true
+                    }
+                }
+            },
+            "add": {
+                content: "加える",
+                rules: {
+                    source: {
+                        upperLimit: null,
+                        lowerLimit: 1,
+                        allowMaterial: true,
+                        allowContainer: false
+                    },
+                    target: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: false,
+                        allowContainer: true
+                    }
+                }
+            },
+            "boil": {
+                content: "茹でる",
+                rules: {
+                    source: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: false,
+                        allowContainer: true
+                    },
+                    target: {
+                        upperLimit: 0,
+                        lowerLimit: 0,
+                        allowMaterial: false,
+                        allowContainer: false
+                    }
+                }
+            },
+            "bringToABoil": {
+                content: "沸騰させる",
+                rules: {
+                    source: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: false,
+                        allowContainer: true
+                    },
+                    target: {
+                        upperLimit: 0,
+                        lowerLimit: 0,
+                        allowMaterial: false,
+                        allowContainer: false
+                    }
+                }
+            },
+            "cookRice": {
+                content: "炊く",
+                rules: {
+                    source: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: true,
+                        allowContainer: false
+                    },
+                    target: {
+                        upperLimit: 0,
+                        lowerLimit: 0,
+                        allowMaterial: true,
+                        allowContainer: false
+                    }
+                }
+            },
+            "cut": {
+                content: "切る",
+                rules: {
+                    source: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: true,
+                        allowContainer: false
+                    },
+                    target: {
+                        upperLimit: 0,
+                        lowerLimit: 0,
+                        allowMaterial: false,
+                        allowContainer: false
+                    }
+                }
+            },
+            "peel": {
+                content: "皮をむく",
+                rules: {
+                    source: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: true,
+                        allowContainer: false
+                    },
+                    target: {
+                        upperLimit: 0,
+                        lowerLimit: 0,
+                        allowMaterial: false,
+                        allowContainer: false
+                    }
+                }
+            },
+            "serve": {
+                content: "盛り付ける",
+                rules: {
+                    source: {
+                        upperLimit: null,
+                        lowerLimit: 1,
+                        allowMaterial: true,
+                        allowContainer: true
+                    },
+                    target: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: false,
+                        allowContainer: true
+                    }
+                }
+            },
+            "stew": {
+                content: "煮込む",
+                rules: {
+                    source: {
+                        upperLimit: 1,
+                        lowerLimit: 1,
+                        allowMaterial: false,
+                        allowContainer: true
+                    },
+                    target: {
+                        upperLimit: 0,
+                        lowerLimit: 0,
+                        allowMaterial: false,
+                        allowContainer: false
+                    }
+                }
+            },
+        }
+
     }
 
 }

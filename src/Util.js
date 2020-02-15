@@ -12,6 +12,18 @@ class Util {
         return Object.prototype.toString.call(obj) === '[object Array]';
     }
 
+    // 配列でなければ配列化して返す
+    convertArray(obj) {
+        if (!obj) {
+            return [];
+        }
+        else if (this.isArray(obj)) {
+            return obj;
+        } else {
+            return [obj];
+        }
+    }
+
     // 複数オブジェクト内の指定した要素の最大値を返す
     // parentObj = { aaa : {xx:10 , yy:20} , bbb : {xx:30 , yy:5}} であれば、
     // getObjectPropertyMax(parentObj , "yy") -> 20を返す
@@ -126,26 +138,27 @@ class Util {
                 title = this.getSourceStr(action, material, 2) + "を" +
                     container[action.target].title + "に加える";
                 break;
-            case "serve":
-                title = container[action.target].title + "に盛り付ける";
-                break;
-            case "cookRice":
-                title = material[action.source].title + "を炊く";
-                break;
-            case "peel":
-                title = material[action.source].title + "の皮をむく";
-                break;
-            case "cut":
-                title = material[action.source].title + "を切る";
-                break;
-            case "stew":
-                title = this.getExitConditionStr(action) + "煮込む";
-                break;
             case "boil":
                 title = this.getExitConditionStr(action) + "茹でる";
                 break;
             case "bringToABoil":
                 title = "沸騰させる";
+                break;
+            case "cookRice":
+                title = material[action.source].title + "を炊く";
+                break;
+            case "cut":
+                title = material[action.source].title + "を切る";
+                break;
+            case "peel":
+                title = material[action.source].title + "の皮をむく";
+                break;
+            case "serve":
+                title = container[action.target].title + "に盛り付ける";
+                break;
+
+            case "stew":
+                title = this.getExitConditionStr(action) + "煮込む";
                 break;
             default:
                 break;
@@ -526,6 +539,57 @@ class Util {
                     throw this.getSyntaxErrorObj(containerName, "素材とコンテナの名称が重複しています");
                 }
             }
+        }
+
+        // アクションチェック
+        for (let actionName in recipe.actions) {
+            let action = recipe.actions[actionName];
+            // 存在チェック
+            if (!c.wfActionTypes[action.type]) {
+                throw this.getSyntaxErrorObj(actionName, "アクションタイプ「" + action.type + "」は存在しません。存在するアクションタイプ、もしくは「custom」を指定してください。");
+            }
+            // 依存関係チェック
+            let depend = this.convertArray(action.depend);
+            for (let i = 0; i < depend.length; i++) {
+                if (!recipe.actions[depend[i]]) {
+                    throw this.getSyntaxErrorObj(actionName, "依存関係「" + depend[i] + "」は存在しません。");
+                }
+            }
+            this.sourceTargetCheck(actionName, action, recipe, "source");
+            this.sourceTargetCheck(actionName, action, recipe, "target");
+        }
+
+    }
+
+    // Actionのsource,target属性のチェック
+    sourceTargetCheck(actionName, action, recipe, attributeName) {
+        let rule;
+        let materialCount, containerCount;
+        // ソースチェック
+        materialCount = 0;
+        containerCount = 0;
+        rule = c.wfActionTypes[action.type].rules[attributeName];
+        let cookObject = this.convertArray(action[attributeName]);
+        for (let i = 0; i < cookObject.length; i++) {
+            if (recipe.materials[cookObject[i]]) {
+                materialCount++;
+            } else if (recipe.containers[cookObject[i]]) {
+                containerCount++;
+            } else {
+                throw this.getSyntaxErrorObj(actionName, attributeName + "属性「" + cookObject[i] + "」が、containersまたはmaterialsで定義されていません。");
+            }
+        }
+        if (!rule.allowMaterial && materialCount > 0) {
+            throw this.getSyntaxErrorObj(actionName, "アクションタイプ「" + action.type + "」では、" + attributeName + "属性としてmaterialsは許可されません。");
+        }
+        if (!rule.allowContainer && containerCount > 0) {
+            throw this.getSyntaxErrorObj(actionName, "アクションタイプ「" + action.type + "」では、" + attributeName + "属性としてcontainersは許可されません。");
+        }
+        if (rule.upperLimit !== null && materialCount + containerCount > rule.upperLimit) {
+            throw this.getSyntaxErrorObj(actionName, "アクションタイプ「" + action.type + "」では、" + attributeName + "を" + rule.upperLimit + "件以下にする必要があります。");
+        }
+        if (rule.lowerLimit !== null && materialCount + containerCount < rule.lowerLimit) {
+            throw this.getSyntaxErrorObj(actionName, "アクションタイプ「" + action.type + "」では、" + attributeName + "を" + rule.lowerLimit + "件以上にする必要があります。");
         }
     }
 
