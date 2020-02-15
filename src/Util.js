@@ -12,6 +12,11 @@ class Util {
         return Object.prototype.toString.call(obj) === '[object Array]';
     }
 
+    // オブジェクト判定
+    isKeyValueObj(obj) {
+        return Object.prototype.toString.call(obj) === '[object Object]';
+    }
+
     // 配列でなければ配列化して返す
     convertArray(obj) {
         if (!obj) {
@@ -493,16 +498,31 @@ class Util {
 
     // 文法チェック(必須チェック等)
     checkRecipeGrammar(recipe) {
-        // 第1階層必須チェック
+        // 第1階層必須チェック、型チェック
         if (!recipe.title) {
             throw this.getSyntaxErrorObj("title", "title要素は必須です。");
-        }
+        };
         if (typeof recipe.title !== "string") {
             throw this.getSyntaxErrorObj("title", "title要素は文字列型の必要があります。");
         };
+        if (!recipe.containers) {
+            throw this.getSyntaxErrorObj("containers", "containers要素は必須です。");
+        };
+        if (!this.isKeyValueObj(recipe.containers)) {
+            throw this.getSyntaxErrorObj("containers", "containers要素はオブジェクト({})型の必要があります。");
+        };
         if (!recipe.materials) {
             throw this.getSyntaxErrorObj("materials", "materials要素は必須です。");
-        }
+        };
+        if (!this.isKeyValueObj(recipe.materials)) {
+            throw this.getSyntaxErrorObj("materials", "materials要素はオブジェクト({})型の必要があります。");
+        };
+        if (!recipe.actions) {
+            throw this.getSyntaxErrorObj("actions", "actions要素は必須です。");
+        };
+        if (!this.isKeyValueObj(recipe.actions)) {
+            throw this.getSyntaxErrorObj("actions", "actions要素はオブジェクト({})型の必要があります。");
+        };
 
         // コンテナ必須チェック
         for (let containerName in recipe.containers) {
@@ -542,11 +562,20 @@ class Util {
         }
 
         // アクションチェック
+        if (Object.keys(recipe.actions).length === 0) {
+            throw this.getSyntaxErrorObj("actions", "1件以上のaction要素が必要です。");
+        };
         for (let actionName in recipe.actions) {
             let action = recipe.actions[actionName];
+            if (!action.type) {
+                throw this.getSyntaxErrorObj(actionName, "type属性が必要です。");
+            }
             // 存在チェック
             if (!c.wfActionTypes[action.type]) {
                 throw this.getSyntaxErrorObj(actionName, "アクションタイプ「" + action.type + "」は存在しません。存在するアクションタイプ、もしくは「custom」を指定してください。");
+            }
+            if (action.type === "custom" && !action.title) {
+                throw this.getSyntaxErrorObj(actionName, "アクションタイプが「custom」の場合、title要素は必須です。");
             }
             // 依存関係チェック
             let depend = this.convertArray(action.depend);
@@ -558,7 +587,6 @@ class Util {
             this.sourceTargetCheck(actionName, action, recipe, "source");
             this.sourceTargetCheck(actionName, action, recipe, "target");
         }
-
     }
 
     // Actionのsource,target属性のチェック

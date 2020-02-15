@@ -123,8 +123,8 @@ class Const {
                         allowContainer: true
                     },
                     target: {
-                        upperLimit: 1,
-                        lowerLimit: 1,
+                        upperLimit: null,
+                        lowerLimit: null,
                         allowMaterial: true,
                         allowContainer: true
                     }
