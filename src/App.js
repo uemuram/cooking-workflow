@@ -24,12 +24,18 @@ class App extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
 
-    fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
-      .then(response => response.json())
-      .then(json => {
-        this.setState({ recipe: json });
-        this.setState({ value: JSON.stringify(json, null, 2) });
-      });
+    // バックグラウンドからレシピを取る場合
+    // fetch(process.env.REACT_APP_BACKEND_URL + "/api/recipies/beefBowl")
+    //   .then(response => response.json())
+    //   .then(json => {
+    //     this.setState({ recipe: json });
+    //     this.setState({ value: JSON.stringify(json, null, 2) });
+    //   });
+
+    // 定数値からレシピを取る場合
+    let json = c.beefBowlRecipe;
+    this.state.recipe = json;
+    this.state.value = JSON.stringify(json, null, 2);
   }
 
   buttonOnClick() {
