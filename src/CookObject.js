@@ -40,7 +40,7 @@ class CookObject extends React.Component {
 
   render() {
     return (
-      <g>
+      <g onClick={this.props.dispCookObjectDetail} data-cookobjectname={this.props.cookObjectName}>
         {this.drawCookObject()}
       </g>
     );

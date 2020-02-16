@@ -408,16 +408,23 @@ class Util {
 
             // 画像等セット
             if (materials[cookObject.keyName]) {
+                // 素材の場合
                 let material = materials[cookObject.keyName];
                 cookObject.type = material.type;
                 cookObject.title = material.title;
+                cookObject.description = material.description ? material.description : "";
                 if (cookObject.type !== "custom") {
                     drawing.image = c.materialImagePath + "/" + c.wfMaterialTypes[material.type].image;
                 }
+                if (material.quantity) {
+                    cookObject.quantity = material.quantity;
+                }
             } else {
+                // コンテナの場合
                 let container = containers[cookObject.keyName];
                 cookObject.type = container.type;
                 cookObject.title = container.title;
+                cookObject.description = container.description ? container.description : "";
                 if (cookObject.type !== "custom") {
                     drawing.image = c.containerImagePath + "/" + c.wfContainerTypes[container.type].image;
                 }
@@ -577,6 +584,19 @@ class Util {
             }
             if (material.type === "custom" && !material.title) {
                 throw this.getSyntaxErrorObj(materialName, "素材タイプが「custom」の場合、title要素は必須です。");
+            }
+            // 分量チェック
+            let quantity = this.convertArray(material.quantity);
+            for (let i = 0; i < quantity.length; i++) {
+                if (!quantity[i].amount) {
+                    throw this.getSyntaxErrorObj(materialName, "quantity要素にamount要素は必須です。");
+                }
+                if (!quantity[i].unit) {
+                    throw this.getSyntaxErrorObj(materialName, "quantity要素にunit要素は必須です。");
+                }
+                if (!c.wfQuantityUnits[quantity[i].unit]) {
+                    throw this.getSyntaxErrorObj(materialName, "分量単位「" + quantity[i].unit + "」は存在しません。");
+                }
             }
         }
 

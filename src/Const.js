@@ -12,7 +12,7 @@ class Const {
         this.wfPaddingY = 30;
 
         // ワークフロー全体の描画倍率
-        this.wfMagnificationX = 190;
+        this.wfMagnificationX = 200;
         this.wfMagnificationY = 125;
 
         // 基本アクションのサイズ
@@ -51,8 +51,8 @@ class Const {
         this.wfCookObjectConnectorHeadOutY2 = this.wfCookObjectConnectorHeadLength * Math.sin(this.wfCookObjectConnectorHeadAngleOut + this.wfCookObjectConnectorHeadSpread / 2);
 
         // 調理オブジェクトが重なった場合の座標差分倍率
-        this.wfOverlapCookObjectMagnificationX = 10;
-        this.wfOverlapCookObjectMagnificationY = 4;
+        this.wfOverlapCookObjectMagnificationX = 16;
+        this.wfOverlapCookObjectMagnificationY = 7;
 
         // 標準のコンテナ
         this.wfContainerTypes = {
@@ -64,6 +64,34 @@ class Const {
                 title: "どんぶり",
                 image: "riceBowl.png",
             },
+        }
+
+        // 標準の分量単位
+        this.wfQuantityUnits = {
+            "go": {
+                titlePrefix: "",
+                titleSuffix: "合"
+            },
+            "ml": {
+                titlePrefix: "",
+                titleSuffix: "ml"
+            },
+            "tbsp": {
+                titlePrefix: "大さじ",
+                titleSuffix: ""
+            },
+            "cm": {
+                titlePrefix: "",
+                titleSuffix: "cm"
+            },
+            "g": {
+                titlePrefix: "",
+                titleSuffix: "g"
+            },
+            "pieces": {
+                titlePrefix: "",
+                titleSuffix: "個"
+            }
         }
 
         // 標準の素材

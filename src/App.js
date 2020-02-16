@@ -2,7 +2,9 @@ import React from 'react';
 import './css/Workflow.css';
 import Workflow from './Workflow';
 import Util from './Util';
+import Const from './Const';
 const util = new Util();
+const c = new Const();
 
 class App extends React.Component {
 
@@ -83,6 +85,30 @@ class App extends React.Component {
     this.setState({ recipeDetail: detailStr });
   }
 
+  // 調理オブジェクトの詳細を表示する
+
+  dispCookObjectDetail(e) {
+    let cookObjectName = e.currentTarget.getAttribute('data-cookobjectname');
+    console.log(cookObjectName);
+    let cookObject = this.state.compiledRecipe.cookObjects[cookObjectName];
+    let detailStr = "";
+    detailStr += ("<" + cookObject.title + ">\n");
+    detailStr += (cookObject.description + "\n\n");
+
+    if (cookObject.quantity) {
+      console.log(cookObject.quantity);
+      let quantityList = cookObject.quantity.map(
+        quantity => c.wfQuantityUnits[quantity.unit].titlePrefix + quantity.amount +
+          c.wfQuantityUnits[quantity.unit].titleSuffix
+      ).join("/");
+      detailStr += ("分量 : " + quantityList);
+    }
+
+    // detailStr += ("入力 : " + action.sourceCookObject.map(name => this.state.compiledRecipe.cookObjects[name].title).join(",") + "\n");
+    // detailStr += ("出力 : " + action.targetCookObject.map(name => this.state.compiledRecipe.cookObjects[name].title).join(",") + "\n");
+    this.setState({ recipeDetail: detailStr });
+  }
+
   render() {
     return (
       <div>
@@ -97,7 +123,8 @@ class App extends React.Component {
             <br />
             <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
           </form>
-          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} dispActionDetail={this.dispActionDetail.bind(this)} />
+          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe}
+            dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
         </div >
       </div>
     )

@@ -32,7 +32,7 @@ class Workflow extends React.Component {
     for (let currentActionName in actions) {
       let currentAction = actions[currentActionName];
       components.push(
-        <Action key={currentActionName} action={currentAction} actionName={currentActionName} dispActionDetail={this.props.dispActionDetail}/>
+        <Action key={currentActionName} action={currentAction} actionName={currentActionName} dispActionDetail={this.props.dispActionDetail} />
       );
     }
     return components;
@@ -93,7 +93,7 @@ class Workflow extends React.Component {
     for (let cookObjectName in cookObjects) {
       let cookObject = cookObjects[cookObjectName];
       components.push(
-        <CookObject key={cookObjectName} cookObject={cookObject} />
+        <CookObject key={cookObjectName} cookObject={cookObject} cookObjectName={cookObjectName} dispCookObjectDetail={this.props.dispCookObjectDetail} />
       );
     }
 
