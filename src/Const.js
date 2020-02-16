@@ -151,7 +151,7 @@ class Const {
                         allowContainer: true
                     },
                     target: {
-                        upperLimit: null,
+                        upperLimit: 1,
                         lowerLimit: null,
                         allowMaterial: true,
                         allowContainer: true

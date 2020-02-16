@@ -18,7 +18,8 @@ class App extends React.Component {
       compiledRecipe: {
         containers: {}, materials: {}, actions: {},
         actionConnectors: [], cookObjects: {}, cookObjectConnectors: []
-      }
+      },
+      workFlowSvgStyle: {}
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -57,6 +58,20 @@ class App extends React.Component {
     this.setState({ recipeDetail: "" });
     this.setState({ recipe: newRecipe });
     this.setState({ compiledRecipe: newCompiledRecipe });
+
+    // レシピの横幅と縦幅を取得しておく
+    let maxWidth = 0, maxHeight;
+    for (let actionName in newCompiledRecipe.actions) {
+      if (actionName === "start" || actionName === "finish") {
+        continue;
+      }
+      let action = newCompiledRecipe.actions[actionName];
+      if (action.drawing.posX + action.drawing.width > maxWidth) {
+        maxWidth = action.drawing.posX + action.drawing.width;
+      }
+    }
+    maxHeight = newCompiledRecipe.actions.finish.drawing.posY + newCompiledRecipe.actions.finish.drawing.radius;
+    this.setState({ workFlowSvgStyle: { width: maxWidth + 20 + "px", height: maxHeight + 20 + "px" } })
   }
 
   // テスト用
@@ -119,7 +134,7 @@ class App extends React.Component {
             <br />
             <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
           </form>
-          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe}
+          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
             dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
         </div >
       </div>

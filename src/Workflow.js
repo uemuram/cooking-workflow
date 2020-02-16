@@ -164,7 +164,7 @@ class Workflow extends React.Component {
         <br />
         {this.props.compiledRecipe.description}
         <br />
-        <svg className="WorkflowSvg" viewBox="0, 0, 800, 1000">
+        <svg className="WorkflowSvg" style={this.props.workFlowSvgStyle}>
           {this.renderAction()}
           {this.renderActionConnector()}
           {this.renderCookObject()}
