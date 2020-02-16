@@ -86,7 +86,6 @@ class App extends React.Component {
   }
 
   // 調理オブジェクトの詳細を表示する
-
   dispCookObjectDetail(e) {
     let cookObjectName = e.currentTarget.getAttribute('data-cookobjectname');
     console.log(cookObjectName);
