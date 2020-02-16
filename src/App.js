@@ -86,7 +86,6 @@ class App extends React.Component {
   }
 
   // 調理オブジェクトの詳細を表示する
-
   dispCookObjectDetail(e) {
     let cookObjectName = e.currentTarget.getAttribute('data-cookobjectname');
     console.log(cookObjectName);
@@ -103,9 +102,6 @@ class App extends React.Component {
       ).join("/");
       detailStr += ("分量 : " + quantityList);
     }
-
-    // detailStr += ("入力 : " + action.sourceCookObject.map(name => this.state.compiledRecipe.cookObjects[name].title).join(",") + "\n");
-    // detailStr += ("出力 : " + action.targetCookObject.map(name => this.state.compiledRecipe.cookObjects[name].title).join(",") + "\n");
     this.setState({ recipeDetail: detailStr });
   }
 
