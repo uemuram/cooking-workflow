@@ -90,6 +90,11 @@ class App extends React.Component {
     this.setState({ compiledRecipe: newCompiledRecipe });
   }
 
+  reshapeJson() {
+    let recipeStr = JSON.stringify(JSON.parse(this.state.value), null, 2);
+    this.setState({ value: recipeStr });
+  }
+
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
@@ -135,6 +140,7 @@ class App extends React.Component {
             <br />
             <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
             {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
+            <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
             <br /><br />
             <textarea readOnly value={this.state.message} className="MessageTextArea" />
             <br />
