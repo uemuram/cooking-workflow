@@ -134,6 +134,14 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <header>
+          <ul>
+            <li>MENU1</li>
+            <li>MENU2</li>
+            <li>MENU3</li>
+            <li>MENU4</li>
+          </ul>
+        </header>
         <div className="Flex">
           <form>
             <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
