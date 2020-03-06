@@ -134,8 +134,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header>
-          <ul>
+        <header className="Header">
+          <ul className="Navi">
             <li>MENU1</li>
             <li>MENU2</li>
             <li>MENU3</li>
