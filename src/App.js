@@ -3,6 +3,17 @@ import './css/Workflow.css';
 import Workflow from './Workflow';
 import Util from './Util';
 import Const from './Const';
+
+// ルート 
+import {
+  BrowserRouter,
+  Route,
+  Link
+} from "react-router-dom";
+
+import Page1 from "./Page1";
+import Page2 from "./Page2";
+
 const util = new Util();
 const c = new Const();
 
@@ -134,29 +145,37 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header className="Header">
-          <ul className="Navi">
-            <li>MENU1</li>
-            <li>MENU2</li>
-            <li>MENU3</li>
-            <li>MENU4</li>
-          </ul>
-        </header>
-        <div className="Flex">
-          <form>
-            <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
-            <br />
-            <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
-            {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
-            <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
-            <br /><br />
-            <textarea readOnly value={this.state.message} className="MessageTextArea" />
-            <br />
-            <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
-          </form>
-          <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
-            dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
-        </div >
+        <BrowserRouter>
+          <header className="Header">
+            <nav>
+              <ul className="Navigation">
+                <li><Link to="/page/1">Page1</Link></li>
+                <li><Link to="/page/2">Page2</Link></li>
+                <li>Page3</li>
+                <li>Page4</li>
+              </ul>
+            </nav>
+          </header>
+
+          <div className="Flex">
+            <Route path="/page/1" component={Page1} />
+            <Route path="/page/2" component={Page2} />
+            <form>
+              <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
+              <br />
+              <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
+              {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
+              <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
+              <br /><br />
+              <textarea readOnly value={this.state.message} className="MessageTextArea" />
+              <br />
+              <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
+            </form>
+            <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
+              dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
+          </div >
+        </BrowserRouter>
+
       </div>
     )
   }

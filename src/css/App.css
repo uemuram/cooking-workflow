@@ -29,14 +29,14 @@
   width: 100%;
 }
 
-.Navi {
+.Navigation {
   list-style: none;
   overflow: hidden;
   margin-top: 5px;
   margin-bottom: 5px;
 }
 
-.Navi li{
+.Navigation li{
   width: 180px;
   text-align: center;
   background-color: #333;
@@ -47,6 +47,12 @@
   color: #fff;
   font-weight: bold;
 }
+
+.Navigation li a{
+  color: #fff;
+}
+
+
 
 .Flex {
   display: -webkit-flex;
