@@ -52,12 +52,13 @@
   color: #fff;
 }
 
-
+.Body {
+  padding-top: 30px;
+}
 
 .Flex {
   display: -webkit-flex;
   display: flex;
-  padding-top: 30px;
 }
 
 .App-logo {
