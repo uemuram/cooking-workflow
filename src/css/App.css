@@ -22,6 +22,40 @@
   color : "black"
 }
 
+.Header {
+  position: fixed;
+  z-index: 9999;
+  background-color: mistyrose;
+  width: 100%;
+}
+
+.Navigation {
+  list-style: none;
+  overflow: hidden;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.Navigation li{
+  width: 180px;
+  text-align: center;
+  background-color: #333;
+  float: left;
+  height: 20px;
+  line-height: 20px;
+  margin-right: 2px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.Navigation li a{
+  color: #fff;
+}
+
+.Body {
+  padding-top: 30px;
+}
+
 .Flex {
   display: -webkit-flex;
   display: flex;
