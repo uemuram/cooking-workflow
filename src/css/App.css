@@ -2,26 +2,6 @@
   text-align: center;
 }
 
-.RecipeTextArea {
-  width: 300px;
-  height: 500px;
-  font-size: small;
-}
-
-.MessageTextArea {
-  width: 300px;
-  height: 80px;
-  font-size: small;
-  color: #ff0000;
-}
-
-.RecipeDetailTextArea {
-  width: 300px;
-  height: 200px;
-  font-size: small;
-  color : "black"
-}
-
 .Header {
   position: fixed;
   z-index: 9999;
@@ -56,10 +36,8 @@
   padding-top: 30px;
 }
 
-.Flex {
-  display: -webkit-flex;
-  display: flex;
-}
+
+
 
 .App-logo {
   height: 40vmin;
