@@ -135,20 +135,20 @@ class MakeRecipe extends React.Component {
   render() {
     return (
       <div className="Flex">
-      <form>
-        <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
-        <br />
-        <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
-        {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
-        <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
-        <br /><br />
-        <textarea readOnly value={this.state.message} className="MessageTextArea" />
-        <br />
-        <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
-      </form>
-      <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
-        dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
-    </div>
+        <form>
+          <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
+          <br />
+          <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
+          {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
+          <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
+          <br /><br />
+          <textarea readOnly value={this.state.message} className="MessageTextArea" />
+          <br />
+          <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
+        </form>
+        <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
+          dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
+      </div>
     );
   }
 }
