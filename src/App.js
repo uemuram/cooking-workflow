@@ -29,9 +29,9 @@ class App extends React.Component {
             <nav>
               <ul className="Navigation">
                 <li><Link to="/makeRecipe">レシピを作る</Link></li>
-                <li><Link to="/page/1">Page1</Link></li>
-                <li><Link to="/page/2">Page2</Link></li>
-                <li>Page3</li>
+                <li><Link to="/page/1">ページ1</Link></li>
+                <li><Link to="/page/2">ページ2</Link></li>
+                <li>ページ3</li>
               </ul>
             </nav>
           </header>
