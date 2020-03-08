@@ -31,7 +31,7 @@ class App extends React.Component {
                 <li><Link to="/makeRecipe">レシピを作る</Link></li>
                 <li><Link to="/page/1">Page1</Link></li>
                 <li><Link to="/page/2">Page2</Link></li>
-                <li>Page4</li>
+                <li>Page3</li>
               </ul>
             </nav>
           </header>
@@ -43,7 +43,6 @@ class App extends React.Component {
           </div>
 
         </BrowserRouter>
-
       </div>
     )
   }
