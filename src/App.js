@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 import MakeRecipe from "./MakeRecipe";
-import Page1 from "./Page1";
+import Cooking from "./Cooking";
 import Page2 from "./Page2";
 
 class App extends React.Component {
@@ -29,7 +29,7 @@ class App extends React.Component {
             <nav>
               <ul className="Navigation">
                 <li><Link to="/makeRecipe">レシピを作る</Link></li>
-                <li><Link to="/page/1">ページ1</Link></li>
+                <li><Link to="/cooking">調理する</Link></li>
                 <li><Link to="/page/2">ページ2</Link></li>
                 <li>ページ3</li>
               </ul>
@@ -37,9 +37,9 @@ class App extends React.Component {
           </header>
 
           <div className="Body">
-            <Route path="/page/1" component={Page1} />
-            <Route path="/page/2" component={Page2} />
             <Route path="/makeRecipe" component={MakeRecipe} />
+            <Route path="/cooking" component={Cooking} />
+            <Route path="/page/2" component={Page2} />
           </div>
 
         </BrowserRouter>

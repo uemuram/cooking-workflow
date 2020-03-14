@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Page1 extends React.Component {
+class Cooking extends React.Component {
 
   constructor(props) {
     super(props);
@@ -10,10 +10,10 @@ class Page1 extends React.Component {
   render() {
     return (
       <div>
-        Page1
+        Cooking
       </div>
     );
   }
 }
 
-export default Page1;
+export default Cooking;
