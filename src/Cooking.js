@@ -9,8 +9,9 @@ class Cooking extends React.Component {
 
   render() {
     return (
-      <div>
-        Cooking
+      <div className="Flex">
+        <div>aaa</div>
+        <div>bbb</div>
       </div>
     );
   }
