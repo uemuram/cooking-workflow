@@ -3,9 +3,11 @@ import '../_css/Workflow.css';
 import Workflow from '../components/Workflow';
 import Util from '../functions/Util';
 import Const from '../functions/Const';
+import CommonUtil from '../functions/CommonUtil';
 
 const util = new Util();
 const c = new Const();
+const commonUtil = new CommonUtil();
 
 class MakeRecipe extends React.Component {
 
@@ -84,7 +86,7 @@ class MakeRecipe extends React.Component {
   // テスト用
   buttonOnClick2() {
     // 要素加工のテスト
-    let newCompiledRecipe = util.deepCopy(this.state.compiledRecipe);
+    let newCompiledRecipe = commonUtil.deepCopy(this.state.compiledRecipe);
     newCompiledRecipe.title = "aaa";
     newCompiledRecipe.actions.addOnionToPot.drawing.width += 10;
     newCompiledRecipe.actions.addOnionToPot.drawing.height += 8;
