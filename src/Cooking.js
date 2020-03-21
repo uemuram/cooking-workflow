@@ -17,20 +17,10 @@ class Cooking extends React.Component {
     this.state.recipes = [recipe1, recipe2];
 
     this.state.compiledRecipes = [];
-
-    console.log("a");
-    console.log(recipe1);
-    console.log("b");
     let compiledRecipe1 = util.compileRecipe(recipe1);
-    console.log("c");
-    //console.log(compiledRecipe1);
-    //this.state.compiledRecipes.push(compiledRecipe1);
-    //let compiledRecipe2 = util.compileRecipe(recipe2);
-    //this.state.compiledRecipes = [compiledRecipe1,compiledRecipe2];
-    //console.log("c");
-    //console.log(compiledRecipe1);
-    //console.log("d");
-
+    this.state.compiledRecipes.push(compiledRecipe1);
+    let compiledRecipe2 = util.compileRecipe(recipe2);
+    this.state.compiledRecipes = [compiledRecipe1,compiledRecipe2];
   }
 
   // アクションを描画する
@@ -40,8 +30,8 @@ class Cooking extends React.Component {
     // 各アクションをコンポーネント化する
     for (let i=0; i<this.state.recipes.length;i++) {
       workflows.push(
-        <Workflow recipe={this.state.recipes[i]} compiledRecipe={this.state.compiledRecipe[0]} workFlowSvgStyle={this.state.workFlowSvgStyle}
-        dispActionDetail={null} dispCookObjectDetail={null} />
+        <Workflow recipe={this.state.recipes[i]} compiledRecipe={this.state.compiledRecipes[i]} workFlowSvgStyle={this.state.workFlowSvgStyle}
+        dispActionDetail={null} dispCookObjectDetail={null} key={i}/>
       );
     }
     return workflows;
@@ -51,7 +41,7 @@ class Cooking extends React.Component {
     return (
       <div className="Flex">
         <div>
-          {/*this.renderWorkflow()*/}
+          {this.renderWorkflow()}
         </div>
         <div>bbb</div>
       </div>
