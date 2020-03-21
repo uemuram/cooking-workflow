@@ -1,9 +1,9 @@
 import React from 'react';
 import Workflow from '../components/Workflow';
-import Util from '../functions/Util';
+import CookingUtil from '../functions/CookingUtil';
 import Const from '../functions/Const';
 
-const util = new Util();
+const cookingUtil = new CookingUtil();
 const c = new Const();
 
 class Cooking extends React.Component {
@@ -17,9 +17,9 @@ class Cooking extends React.Component {
     this.state.recipes = [recipe1, recipe2];
 
     this.state.compiledRecipes = [];
-    let compiledRecipe1 = util.compileRecipe(recipe1);
+    let compiledRecipe1 = cookingUtil.compileRecipe(recipe1);
     this.state.compiledRecipes.push(compiledRecipe1);
-    let compiledRecipe2 = util.compileRecipe(recipe2);
+    let compiledRecipe2 = cookingUtil.compileRecipe(recipe2);
     this.state.compiledRecipes = [compiledRecipe1,compiledRecipe2];
   }
 

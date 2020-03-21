@@ -1,11 +1,11 @@
 import React from 'react';
 import '../_css/Workflow.css';
 import Workflow from '../components/Workflow';
-import Util from '../functions/Util';
+import CookingUtil from '../functions/CookingUtil';
 import Const from '../functions/Const';
 import CommonUtil from '../functions/CommonUtil';
 
-const util = new Util();
+const cookingUtil = new CookingUtil();
 const c = new Const();
 const commonUtil = new CommonUtil();
 
@@ -55,7 +55,7 @@ class MakeRecipe extends React.Component {
     // レシピをコンパイルする
     let newCompiledRecipe;
     try {
-      newCompiledRecipe = util.compileRecipe(newRecipe);
+      newCompiledRecipe = cookingUtil.compileRecipe(newRecipe);
     } catch (e) {
       this.setState({ message: e.message });
       return;

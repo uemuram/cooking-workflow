@@ -5,7 +5,7 @@ import CommonUtil from './CommonUtil';
 const c = new Const();
 const commonUtil = new CommonUtil();
 
-class Util {
+class CookingUtil {
     // 各アクションの階層(縦位置)をセット
     setHierarchy(recipe, actionName, hierarchy) {
         let action = recipe.actions[actionName];
@@ -696,4 +696,4 @@ class Util {
         return compiledRecipe;
     }
 }
-export default Util;
+export default CookingUtil;
