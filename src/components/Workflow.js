@@ -4,7 +4,7 @@ import '../_css/Workflow.css';
 import CookObject from './CookObject';
 import Action from './Action';
 import Const from '../functions/Const';
-import Util from '../functcions/Util';
+import Util from '../functions/Util';
 // 定数定義
 const c = new Const();
 // ユーティリティ

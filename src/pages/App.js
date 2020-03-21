@@ -1,5 +1,5 @@
 import React from 'react';
-import './_css/Workflow.css';
+import '../_css/Workflow.css';
 
 // ルート 
 import {
@@ -8,9 +8,9 @@ import {
   Link
 } from "react-router-dom";
 
-import MakeRecipe from "./pages/MakeRecipe";
-import Cooking from "./pages/Cooking";
-import Page2 from "./pages/Page2";
+import MakeRecipe from "./MakeRecipe";
+import Cooking from "./Cooking";
+import Page2 from "./Page2";
 
 class App extends React.Component {
 
