@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/Workflow.css';
+import '../_css/Workflow.css';
 
 class Action extends React.Component {
 

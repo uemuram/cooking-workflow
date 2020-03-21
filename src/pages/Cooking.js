@@ -1,7 +1,7 @@
 import React from 'react';
-import Workflow from './Workflow';
-import Util from './Util';
-import Const from './Const';
+import Workflow from '../components/Workflow';
+import Util from '../functions/Util';
+import Const from '../functions/Const';
 
 const util = new Util();
 const c = new Const();

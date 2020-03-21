@@ -1,10 +1,10 @@
 import React from 'react';
-import './css/App.css';
-import './css/Workflow.css';
+import '../_css/App.css';
+import '../_css/Workflow.css';
 import CookObject from './CookObject';
 import Action from './Action';
-import Const from './Const';
-import Util from './Util';
+import Const from '../functions/Const';
+import Util from '../functcions/Util';
 // 定数定義
 const c = new Const();
 // ユーティリティ
