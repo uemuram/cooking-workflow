@@ -84,7 +84,7 @@ class MakeRecipe extends React.Component {
   // テスト用
   buttonOnClick2() {
     // 要素加工のテスト
-    let newCompiledRecipe = Object.assign({}, this.state.compiledRecipe);
+    let newCompiledRecipe = util.deepCopy(this.state.compiledRecipe);
     newCompiledRecipe.title = "aaa";
     newCompiledRecipe.actions.addOnionToPot.drawing.width += 10;
     newCompiledRecipe.actions.addOnionToPot.drawing.height += 8;

@@ -29,6 +29,11 @@ class Util {
         }
     }
 
+    // オブジェクトのディープコピー
+    deepCopy(obj) {
+        return Object.assign({}, JSON.parse(JSON.stringify(obj)));
+    }
+
     // 複数オブジェクト内の指定した要素の最大値を返す
     // parentObj = { aaa : {xx:10 , yy:20} , bbb : {xx:30 , yy:5}} であれば、
     // getObjectPropertyMax(parentObj , "yy") -> 20を返す
@@ -720,7 +725,7 @@ class Util {
     // レシピをコンパイルする
     compileRecipe(recipe) {
         // コンパイル済みレシピを生成
-        let compiledRecipe = Object.assign({}, recipe);
+        let compiledRecipe = this.deepCopy(recipe);
         try {
             // 文法チェック
             this.checkRecipeGrammar(recipe);
