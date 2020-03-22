@@ -1,5 +1,5 @@
 // 定数定義
-import Const from './Const';
+import Const from '../constants/Const';
 import CommonUtil from './CommonUtil';
 
 const c = new Const();
@@ -698,7 +698,6 @@ class CookingUtil {
 
     // レシピからスタイルを計算
     getWorkFlowSvgStyle(compiledRecipe) {
-        console.log("yy");
         // レシピの横幅と縦幅を取得
         let maxWidth = 0, maxHeight;
         for (let actionName in compiledRecipe.actions) {

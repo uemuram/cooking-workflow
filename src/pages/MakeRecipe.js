@@ -2,7 +2,7 @@ import React from 'react';
 import '../_css/Workflow.css';
 import Workflow from '../components/Workflow';
 import CookingUtil from '../functions/CookingUtil';
-import Const from '../functions/Const';
+import Const from '../constants/Const';
 import CommonUtil from '../functions/CommonUtil';
 
 const cookingUtil = new CookingUtil();

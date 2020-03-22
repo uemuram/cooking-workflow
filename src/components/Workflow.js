@@ -3,7 +3,7 @@ import '../_css/App.css';
 import '../_css/Workflow.css';
 import CookObject from './CookObject';
 import Action from './Action';
-import Const from '../functions/Const';
+import Const from '../constants/Const';
 import CommonUtil from '../functions/CommonUtil';
 
 // 定数定義

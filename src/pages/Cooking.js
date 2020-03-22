@@ -1,7 +1,7 @@
 import React from 'react';
 import Workflow from '../components/Workflow';
 import CookingUtil from '../functions/CookingUtil';
-import Const from '../functions/Const';
+import Const from '../constants/Const';
 
 const cookingUtil = new CookingUtil();
 const c = new Const();
