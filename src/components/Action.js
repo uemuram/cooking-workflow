@@ -26,13 +26,17 @@ class Action extends React.Component {
       // 状態によって色を変える
       let fill;
       switch (this.props.action.status) {
+        case en.ActionStatus.READY:
+          fill = "white";
+          break;
         case en.ActionStatus.NOT_READY:
           fill = "gray";
           break;
         default:
-          fill = "white";
+          fill = "blue";
           break;
       }
+      console.log(fill);
 
       // 矩形の場合
       return <g onClick={this.props.dispActionDetail} data-actionname={this.props.actionName}>

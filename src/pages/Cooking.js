@@ -43,6 +43,8 @@ class Cooking extends React.Component {
         let action = compiledRecipes.actions[actionName];
         if (action.hierarchy === 1) {
           action.status = en.ActionStatus.READY;
+        } else {
+          action.status = en.ActionStatus.NOT_READY;
         }
       }
 

@@ -147,7 +147,7 @@ class CookingUtil {
             // 階層、広がりをリセットしておく
             action.hierarchy = null;
             action.spread = null;
-            action.status = en.ActionStatus.NOT_READY;
+            action.status = en.ActionStatus.READY;
 
             if (actionName === "start") {
                 continue;
