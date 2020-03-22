@@ -2,9 +2,11 @@ import React from 'react';
 import Workflow from '../components/Workflow';
 import CookingUtil from '../functions/CookingUtil';
 import Const from '../constants/Const';
+import Enum from '../constants/Enum';
 
 const cookingUtil = new CookingUtil();
 const c = new Const();
+const en = new Enum();
 
 class Cooking extends React.Component {
 
@@ -20,7 +22,7 @@ class Cooking extends React.Component {
     let compiledRecipe1 = cookingUtil.compileRecipe(recipe1);
     this.state.compiledRecipes.push(compiledRecipe1);
     let compiledRecipe2 = cookingUtil.compileRecipe(recipe2);
-    this.state.compiledRecipes = [compiledRecipe1,compiledRecipe2];
+    this.state.compiledRecipes = [compiledRecipe1, compiledRecipe2];
   }
 
   // アクションを描画する
@@ -29,16 +31,25 @@ class Cooking extends React.Component {
 
     let workFlowSvgStyle = {
       width: "1000px",
-      height: "1000px"
+      height: "1100px"
     };
 
-
     // 各アクションをコンポーネント化する
-    for (let i=0; i<this.state.recipes.length;i++) {
+    for (let i = 0; i < this.state.compiledRecipes.length; i++) {
+      let compiledRecipes = this.state.compiledRecipes[i];
+
+      // アクションのステータスを設定
+      for (let actionName in compiledRecipes.actions) {
+        let action = compiledRecipes.actions[actionName];
+        if (action.hierarchy === 1) {
+          action.status = en.ActionStatus.READY;
+        }
+      }
+
       workflows.push(
-        <Workflow recipe={this.state.recipes[i]} compiledRecipe={this.state.compiledRecipes[i]} 
-        workFlowSvgStyle={workFlowSvgStyle}
-        dispActionDetail={null} dispCookObjectDetail={null} key={i}/>
+        <Workflow recipe={this.state.recipes[i]} compiledRecipe={this.state.compiledRecipes[i]}
+          workFlowSvgStyle={workFlowSvgStyle}
+          dispActionDetail={null} dispCookObjectDetail={null} key={i} />
       );
     }
     return workflows;

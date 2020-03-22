@@ -1,8 +1,10 @@
 // 定数定義
 import Const from '../constants/Const';
+import Enum from '../constants/Enum';
 import CommonUtil from './CommonUtil';
 
 const c = new Const();
+const en = new Enum();
 const commonUtil = new CommonUtil();
 
 class CookingUtil {
@@ -145,6 +147,7 @@ class CookingUtil {
             // 階層、広がりをリセットしておく
             action.hierarchy = null;
             action.spread = null;
+            action.status = en.ActionStatus.NOT_READY;
 
             if (actionName === "start") {
                 continue;
@@ -175,9 +178,6 @@ class CookingUtil {
             // 手前アクションに対してループ
             for (let i = 0; i < action.depend.length; i++) {
                 let dependActionName = action.depend[i];
-                // if (!dependActionName) {
-                //     dependActionName = "start";
-                // }
                 // console.log(dependActionName + " -> " + actionName);
                 let dependAction = actions[dependActionName];
 

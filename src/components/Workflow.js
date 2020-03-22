@@ -6,9 +6,7 @@ import Action from './Action';
 import Const from '../constants/Const';
 import CommonUtil from '../functions/CommonUtil';
 
-// 定数定義
 const c = new Const();
-// ユーティリティ
 const commonUtil = new CommonUtil();
 
 class Workflow extends React.Component {
