@@ -2,3 +2,10 @@
     display: -webkit-flex;
     display: flex;
   }
+
+.Task {
+    width: 200px;
+    height: 100px;
+    border: solid #408040;
+    font-size: small;
+  }

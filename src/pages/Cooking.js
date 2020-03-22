@@ -1,5 +1,6 @@
 import React from 'react';
 import Workflow from '../components/Workflow';
+import Task from '../components/Task';
 import CookingUtil from '../functions/CookingUtil';
 import Const from '../constants/Const';
 import Enum from '../constants/Enum';
@@ -14,6 +15,7 @@ class Cooking extends React.Component {
     super(props);
     this.state = {};
 
+    // レシピの整備(後でタイミングを検討)
     let recipe1 = c.beefBowlRecipe;
     let recipe2 = c.beefBowlRecipe;
     this.state.recipes = [recipe1, recipe2];
@@ -23,6 +25,14 @@ class Cooking extends React.Component {
     this.state.compiledRecipes.push(compiledRecipe1);
     let compiledRecipe2 = cookingUtil.compileRecipe(recipe2);
     this.state.compiledRecipes = [compiledRecipe1, compiledRecipe2];
+
+    // タスクの整備(後でタイミングを検討)
+    let taskList = [];
+    taskList.push(compiledRecipe1.actions["cookRice"]);
+    taskList.push(compiledRecipe2.actions["cutOnion"]);
+    taskList.push(compiledRecipe2.actions["stew2"]);
+    taskList.push(compiledRecipe1.actions["makeBroth"]);
+    this.state.taskList = taskList;
   }
 
   // アクションを描画する
@@ -57,13 +67,28 @@ class Cooking extends React.Component {
     return workflows;
   }
 
+  // タスクを描画する
+  renderTask() {
+    let Tasks = [];
+
+    for (let i = 0; i < this.state.taskList.length; i++) {
+      Tasks.push(
+        <Task action={this.state.taskList[i]}
+          key={i} />
+      )
+    }
+    return Tasks;
+  }
+
   render() {
     return (
       <div className="Flex">
         <div>
           {this.renderWorkflow()}
         </div>
-        <div>bbb</div>
+        <div>
+          {this.renderTask()}
+        </div>
       </div>
     );
   }

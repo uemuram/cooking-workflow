@@ -36,7 +36,6 @@ class Action extends React.Component {
           fill = "blue";
           break;
       }
-      console.log(fill);
 
       // 矩形の場合
       return <g onClick={this.props.dispActionDetail} data-actionname={this.props.actionName}>
