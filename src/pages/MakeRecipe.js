@@ -1,11 +1,13 @@
 import React from 'react';
-import './css/Workflow.css';
-import Workflow from './Workflow';
-import Util from './Util';
-import Const from './Const';
+import '../_css/Workflow.css';
+import Workflow from '../components/Workflow';
+import CookingUtil from '../functions/CookingUtil';
+import Const from '../functions/Const';
+import CommonUtil from '../functions/CommonUtil';
 
-const util = new Util();
+const cookingUtil = new CookingUtil();
 const c = new Const();
+const commonUtil = new CommonUtil();
 
 class MakeRecipe extends React.Component {
 
@@ -53,7 +55,7 @@ class MakeRecipe extends React.Component {
     // レシピをコンパイルする
     let newCompiledRecipe;
     try {
-      newCompiledRecipe = util.compileRecipe(newRecipe);
+      newCompiledRecipe = cookingUtil.compileRecipe(newRecipe);
     } catch (e) {
       this.setState({ message: e.message });
       return;
@@ -84,7 +86,7 @@ class MakeRecipe extends React.Component {
   // テスト用
   buttonOnClick2() {
     // 要素加工のテスト
-    let newCompiledRecipe = Object.assign({}, this.state.compiledRecipe);
+    let newCompiledRecipe = commonUtil.deepCopy(this.state.compiledRecipe);
     newCompiledRecipe.title = "aaa";
     newCompiledRecipe.actions.addOnionToPot.drawing.width += 10;
     newCompiledRecipe.actions.addOnionToPot.drawing.height += 8;
@@ -135,20 +137,20 @@ class MakeRecipe extends React.Component {
   render() {
     return (
       <div className="Flex">
-      <form>
-        <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
-        <br />
-        <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
-        {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
-        <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
-        <br /><br />
-        <textarea readOnly value={this.state.message} className="MessageTextArea" />
-        <br />
-        <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
-      </form>
-      <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
-        dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
-    </div>
+        <form>
+          <textarea value={this.state.value} onChange={this.handleChange} className="RecipeTextArea" />
+          <br />
+          <button type="button" onClick={() => this.buttonOnClick()}>レシピフロー表示</button>
+          {/*<button type="button" onClick={() => this.buttonOnClick2()}>何らかのボタン2</button>*/}
+          <button type="button" onClick={() => this.reshapeJson()}>JSON整形</button>
+          <br /><br />
+          <textarea readOnly value={this.state.message} className="MessageTextArea" />
+          <br />
+          <textarea readOnly value={this.state.recipeDetail} className="RecipeDetailTextArea" />
+        </form>
+        <Workflow recipe={this.state.recipe} compiledRecipe={this.state.compiledRecipe} workFlowSvgStyle={this.state.workFlowSvgStyle}
+          dispActionDetail={this.dispActionDetail.bind(this)} dispCookObjectDetail={this.dispCookObjectDetail.bind(this)} />
+      </div>
     );
   }
 }

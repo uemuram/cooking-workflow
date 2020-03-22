@@ -1,62 +1,11 @@
 // 定数定義
 import Const from './Const';
+import CommonUtil from './CommonUtil';
+
 const c = new Const();
+const commonUtil = new CommonUtil();
 
-class Util {
-    test3() {
-        console.log("render!");
-    };
-
-    // 配列判定
-    isArray(obj) {
-        return Object.prototype.toString.call(obj) === '[object Array]';
-    }
-
-    // オブジェクト判定
-    isKeyValueObj(obj) {
-        return Object.prototype.toString.call(obj) === '[object Object]';
-    }
-
-    // 配列でなければ配列化して返す
-    convertArray(obj) {
-        if (!obj) {
-            return [];
-        }
-        else if (this.isArray(obj)) {
-            return obj;
-        } else {
-            return [obj];
-        }
-    }
-
-    // 複数オブジェクト内の指定した要素の最大値を返す
-    // parentObj = { aaa : {xx:10 , yy:20} , bbb : {xx:30 , yy:5}} であれば、
-    // getObjectPropertyMax(parentObj , "yy") -> 20を返す
-    getObjectPropertyMax(parentObj, targetPropertyName) {
-        let i = 0;
-        let max;
-        for (let key in parentObj) {
-            // 今見ているオブジェクト
-            let obj = parentObj[key];
-            if (i === 0 || obj[targetPropertyName] > max) {
-                max = obj[targetPropertyName];
-            }
-            i++;
-        }
-        return max;
-    }
-
-    // 2次元配列を受け取り、指定された箇所より下側に要素があるかどうかを返す
-    checkExistUnderArray(array, h, s) {
-        for (let i = h + 1; i < array.length; i++) {
-            //console.log(array[i][s])
-            if (array[i][s]) {
-                return true
-            };
-        }
-        return false;
-    }
-
+class CookingUtil {
     // 各アクションの階層(縦位置)をセット
     setHierarchy(recipe, actionName, hierarchy) {
         let action = recipe.actions[actionName];
@@ -87,7 +36,7 @@ class Util {
         }
 
         // セット処理
-        while (this.checkExistUnderArray(recipe.actionMap, action.hierarchy, spread)) {
+        while (commonUtil.checkExistUnderArray(recipe.actionMap, action.hierarchy, spread)) {
             spread++;
         };
 
@@ -206,12 +155,12 @@ class Util {
                 action.depend = ["start"];
             }
             // 次アクションが単一の場合は配列にしておく
-            if (!this.isArray(action.depend)) {
+            if (!commonUtil.isArray(action.depend)) {
                 action.depend = [action.depend];
             }
 
             // ソースが単一の場合は配列にしておく
-            if (action.source && !this.isArray(action.source)) {
+            if (action.source && !commonUtil.isArray(action.source)) {
                 action.source = [action.source];
             }
 
@@ -270,7 +219,7 @@ class Util {
         // Y座標の基準値(階層)を計算
         this.setHierarchy(compiledRecipe, "start", 0);
         // X座標の基準値(広がり)を計算
-        let maxHierarchy = this.getObjectPropertyMax(actions, "hierarchy");
+        let maxHierarchy = commonUtil.getObjectPropertyMax(actions, "hierarchy");
         for (let i = 0; i <= maxHierarchy; i++) {
             compiledRecipe.actionMap.push([]);
         }
@@ -543,19 +492,19 @@ class Util {
         if (!recipe.containers) {
             throw this.getSyntaxErrorObj("containers", "containers要素は必須です。");
         };
-        if (!this.isKeyValueObj(recipe.containers)) {
+        if (!commonUtil.isKeyValueObj(recipe.containers)) {
             throw this.getSyntaxErrorObj("containers", "containers要素はオブジェクト({})型の必要があります。");
         };
         if (!recipe.materials) {
             throw this.getSyntaxErrorObj("materials", "materials要素は必須です。");
         };
-        if (!this.isKeyValueObj(recipe.materials)) {
+        if (!commonUtil.isKeyValueObj(recipe.materials)) {
             throw this.getSyntaxErrorObj("materials", "materials要素はオブジェクト({})型の必要があります。");
         };
         if (!recipe.actions) {
             throw this.getSyntaxErrorObj("actions", "actions要素は必須です。");
         };
-        if (!this.isKeyValueObj(recipe.actions)) {
+        if (!commonUtil.isKeyValueObj(recipe.actions)) {
             throw this.getSyntaxErrorObj("actions", "actions要素はオブジェクト({})型の必要があります。");
         };
 
@@ -586,7 +535,7 @@ class Util {
                 throw this.getSyntaxErrorObj(materialName, "素材タイプが「custom」の場合、title要素は必須です。");
             }
             // 分量チェック
-            let quantity = this.convertArray(material.quantity);
+            let quantity = commonUtil.convertArray(material.quantity);
             for (let i = 0; i < quantity.length; i++) {
                 if (!quantity[i].amount) {
                     throw this.getSyntaxErrorObj(materialName, "quantity要素にamount要素は必須です。");
@@ -626,7 +575,7 @@ class Util {
                 throw this.getSyntaxErrorObj(actionName, "アクションタイプが「custom」の場合、title要素は必須です。");
             }
             // 依存関係チェック
-            let depend = this.convertArray(action.depend);
+            let depend = commonUtil.convertArray(action.depend);
             for (let i = 0; i < depend.length; i++) {
                 if (!recipe.actions[depend[i]]) {
                     throw this.getSyntaxErrorObj(actionName, "依存関係「" + depend[i] + "」は存在しません。");
@@ -645,7 +594,7 @@ class Util {
         materialCount = 0;
         containerCount = 0;
         rule = c.wfActionTypes[action.type].rules[attributeName];
-        let cookObject = this.convertArray(action[attributeName]);
+        let cookObject = commonUtil.convertArray(action[attributeName]);
         for (let i = 0; i < cookObject.length; i++) {
             if (recipe.materials[cookObject[i]]) {
                 materialCount++;
@@ -720,7 +669,7 @@ class Util {
     // レシピをコンパイルする
     compileRecipe(recipe) {
         // コンパイル済みレシピを生成
-        let compiledRecipe = Object.assign({}, recipe);
+        let compiledRecipe = commonUtil.deepCopy(recipe);
         try {
             // 文法チェック
             this.checkRecipeGrammar(recipe);
@@ -747,4 +696,4 @@ class Util {
         return compiledRecipe;
     }
 }
-export default Util;
+export default CookingUtil;

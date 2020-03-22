@@ -1,15 +1,15 @@
 import React from 'react';
-import './css/App.css';
-import './css/Workflow.css';
+import '../_css/App.css';
+import '../_css/Workflow.css';
 import CookObject from './CookObject';
 import Action from './Action';
-import Const from './Const';
-import Util from './Util';
+import Const from '../functions/Const';
+import CommonUtil from '../functions/CommonUtil';
+
 // 定数定義
 const c = new Const();
 // ユーティリティ
-const util = new Util();
-
+const commonUtil = new CommonUtil();
 
 class Workflow extends React.Component {
 
@@ -171,7 +171,7 @@ class Workflow extends React.Component {
           {this.renderCookObjectConnector()}
         </svg>
 
-        {util.test3()}
+        {commonUtil.test3()}
       </div>
     );
   }
