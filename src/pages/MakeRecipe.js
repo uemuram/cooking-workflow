@@ -68,19 +68,8 @@ class MakeRecipe extends React.Component {
     this.setState({ recipe: newRecipe });
     this.setState({ compiledRecipe: newCompiledRecipe });
 
-    // レシピの横幅と縦幅を取得しておく
-    let maxWidth = 0, maxHeight;
-    for (let actionName in newCompiledRecipe.actions) {
-      if (actionName === "start" || actionName === "finish") {
-        continue;
-      }
-      let action = newCompiledRecipe.actions[actionName];
-      if (action.drawing.posX + action.drawing.width > maxWidth) {
-        maxWidth = action.drawing.posX + action.drawing.width;
-      }
-    }
-    maxHeight = newCompiledRecipe.actions.finish.drawing.posY + newCompiledRecipe.actions.finish.drawing.radius;
-    this.setState({ workFlowSvgStyle: { width: maxWidth + 20 + "px", height: maxHeight + 20 + "px" } })
+    cookingUtil.getWorkFlowSvgStyle(newCompiledRecipe);
+    this.setState({ workFlowSvgStyle: cookingUtil.getWorkFlowSvgStyle(newCompiledRecipe) })
   }
 
   // テスト用

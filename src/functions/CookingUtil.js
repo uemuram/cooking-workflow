@@ -178,7 +178,7 @@ class CookingUtil {
                 // if (!dependActionName) {
                 //     dependActionName = "start";
                 // }
-                console.log(dependActionName + " -> " + actionName);
+                // console.log(dependActionName + " -> " + actionName);
                 let dependAction = actions[dependActionName];
 
                 // 次アクションの実態がない場合はエラー
@@ -224,7 +224,7 @@ class CookingUtil {
             compiledRecipe.actionMap.push([]);
         }
         this.setSpread(compiledRecipe, "start", 0);
-        console.log(compiledRecipe.actionMap);
+        // console.log(compiledRecipe.actionMap);
 
         // 基準値および広がりから、具体的な座標を計算
         for (let actionName in actions) {
@@ -422,7 +422,7 @@ class CookingUtil {
             if (cookObject.toAction) {
                 for (let i = 0; i < cookObject.toAction.length; i++) {
                     let actionName = cookObject.toAction[i];
-                    console.log(cookObjectName + " -> " + actionName);
+                    // console.log(cookObjectName + " -> " + actionName);
                     let cookObjectConnector = {
                         type: "in",
                         from: {
@@ -439,7 +439,7 @@ class CookingUtil {
             if (cookObject.fromAction) {
                 for (let i = 0; i < cookObject.fromAction.length; i++) {
                     let actionName = cookObject.fromAction[i];
-                    console.log(actionName + " -> " + cookObjectName);
+                    // console.log(actionName + " -> " + cookObjectName);
                     let cookObjectConnector = {
                         type: "out",
                         from: {
@@ -695,5 +695,27 @@ class CookingUtil {
         }
         return compiledRecipe;
     }
+
+    // レシピからスタイルを計算
+    getWorkFlowSvgStyle(compiledRecipe) {
+        console.log("yy");
+        // レシピの横幅と縦幅を取得
+        let maxWidth = 0, maxHeight;
+        for (let actionName in compiledRecipe.actions) {
+            if (actionName === "start" || actionName === "finish") {
+                continue;
+            }
+            let action = compiledRecipe.actions[actionName];
+            if (action.drawing.posX + action.drawing.width > maxWidth) {
+                maxWidth = action.drawing.posX + action.drawing.width;
+            }
+        }
+        maxHeight = compiledRecipe.actions.finish.drawing.posY + compiledRecipe.actions.finish.drawing.radius;
+        return {
+            width: maxWidth + 20 + "px",
+            height: maxHeight + 20 + "px"
+        }
+    }
+
 }
 export default CookingUtil;

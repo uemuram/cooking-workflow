@@ -27,10 +27,17 @@ class Cooking extends React.Component {
   renderWorkflow() {
     let workflows = [];
 
+    let workFlowSvgStyle = {
+      width: "1000px",
+      height: "1000px"
+    };
+
+
     // 各アクションをコンポーネント化する
     for (let i=0; i<this.state.recipes.length;i++) {
       workflows.push(
-        <Workflow recipe={this.state.recipes[i]} compiledRecipe={this.state.compiledRecipes[i]} workFlowSvgStyle={this.state.workFlowSvgStyle}
+        <Workflow recipe={this.state.recipes[i]} compiledRecipe={this.state.compiledRecipes[i]} 
+        workFlowSvgStyle={workFlowSvgStyle}
         dispActionDetail={null} dispCookObjectDetail={null} key={i}/>
       );
     }
