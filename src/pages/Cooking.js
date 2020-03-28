@@ -35,6 +35,11 @@ class Cooking extends React.Component {
     this.state.taskList = taskList;
   }
 
+  selectTask(e) {
+    //let actionName = e.currentTarget.getAttribute('data-actionname');
+    console.log("selectTask");
+  }
+
   // アクションを描画する
   renderWorkflow() {
     let workflows = [];
@@ -73,7 +78,7 @@ class Cooking extends React.Component {
 
     for (let i = 0; i < this.state.taskList.length; i++) {
       Tasks.push(
-        <Task action={this.state.taskList[i]}
+        <Task action={this.state.taskList[i]} selectTask={this.selectTask.bind(this)}
           key={i} />
       )
     }

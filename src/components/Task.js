@@ -10,7 +10,7 @@ class Task extends React.Component {
 
   render() {
     return (
-      <div className="Task">
+      <div className="Task" onClick={this.props.selectTask}>
         {this.props.action.title}
       </div>
     );

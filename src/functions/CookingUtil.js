@@ -148,6 +148,7 @@ class CookingUtil {
             action.hierarchy = null;
             action.spread = null;
             action.status = en.ActionStatus.READY;
+            action.selected = en.ActionSelected.NOT_SELECTED;
 
             if (actionName === "start") {
                 continue;
